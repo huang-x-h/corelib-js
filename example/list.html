@@ -11,14 +11,25 @@
 			<div class="panel panel-default">
 			  <div class="panel-heading">List Example</div>
 			  <div class="panel-body">
-			    <ul id="list"/>
+			    <ul id="list" class="list-group"></ul>
+			    <ul class="list-group">
+					  <li class="list-group-item">Cras justo odio</li>
+					  <li class="list-group-item">Dapibus ac facilisis in</li>
+					  <li class="list-group-item">Morbi leo risus</li>
+					  <li class="list-group-item">Porta ac consectetur ac</li>
+					  <li class="list-group-item">Vestibulum at eros</li>
+					</ul>
 			    <div class="row">
-			    	<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
-			    	<button type="button" class="btn btn-default" onclick="delHandler()">Delete</button>
+			    	<div class="col-md-1">
+			    		<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
+			    	</div>
+			    	<div class="col-md-1">
+			    		<button type="button" class="btn btn-default" onclick="delHandler()">Delete</button>
+			    	</div>
 			    </div>
 			  </div>
 
-		   	<div class="btn-group open">
+		   	<!-- <div class="btn-group open">
 				  <button type="button" class="btn btn-default">Action</button>
 				  <button type="button" class="btn btn-default">
 				    <span class="caret"></span>
@@ -30,7 +41,7 @@
 				    <li class="divider"></li>
 				    <li><a href="#">Separated link</a></li>
 				  </ul>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<script type="text/javascript" src="../libs/jquery.js"></script>
@@ -40,7 +51,6 @@
 		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/collections/arraylist.js"></script>
 		<script type="text/javascript">
-
 			var component = $('#list').list({
 				'dataSource':new ztesoft.collections.ArrayList(['Hello', 'World'])
 			}).data('List');

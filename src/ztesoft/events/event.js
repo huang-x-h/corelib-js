@@ -118,4 +118,4 @@
     }
   };
 
-})(window.jQuery);
+}(window.jQuery));

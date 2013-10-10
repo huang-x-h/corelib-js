@@ -1,5 +1,4 @@
 (function($, window, document, undefined) {
-	var ztesoft = window.ztesoft;
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var List = ns.List = function(element, options) {
@@ -11,7 +10,6 @@
 		this.options = options;
 		this.metadata = this.$element.data('plugin.options');
 		this.$element.data('List', this);
-		this.$element.css('list-group');
 
 		this.init();
 	};
@@ -126,4 +124,4 @@
 		return this;
 	}
 
-})(window.jQuery, window, document);
+}(window.jQuery, window, document));

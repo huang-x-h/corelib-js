@@ -45,4 +45,4 @@
 		return this.source[index];
 	};
 
-})(window._);
+}(window._));

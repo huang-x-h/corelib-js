@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>ViewStack</title>
+			<link rel="stylesheet" href="../css/bootstrap.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+			  <div class="panel-heading">ViewStack Example</div>
+			  <div class="panel-body">
+			  	<div>
+			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(0)">Home</button>
+			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(1)">Profile</button>
+			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(2)">Message</button>
+			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(3)">Setting</button>
+			  	</div>
+					<div class="tab-content">
+					  <div class="tab-pane active" id="home">Home</div>
+					  <div class="tab-pane" id="profile">Profile</div>
+					  <div class="tab-pane" id="messages">Message</div>
+					  <div class="tab-pane" id="settings">Setting</div>
+					</div>
+			  </div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/viewstack.js"></script>
+		<script type="text/javascript">
+			$('.tab-content').viewstack();
+
+			var viewstack = $('.tab-content').data('ViewStack');
+			console.log(viewstack.selectedIndex());
+
+			function setSelectedIndex(index) {
+				viewstack.selectedIndex(index);
+				console.log(viewstack.selectedIndex());
+			}
+		</script>
+	</body>
+</html>

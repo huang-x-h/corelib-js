@@ -27,4 +27,4 @@
     return ns;
   };
 
-})(window.jQuery);
+}(window.jQuery));
