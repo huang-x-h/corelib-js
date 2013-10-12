@@ -1,36 +1,29 @@
-(function($, window, document, undefined) {
+(function() {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var List = ns.List = function(element, options) {
-		this.type = 'List';
-		this.selectedIndex = -1;
-		this.selectedItem = null;
+		this.dataSource = null;
+		this._selectedItem = null;
+		this._selectedIndex = -1;
+
 		this.element = element;
 		this.$element = $(element);
-		this.options = options;
-		this.metadata = this.$element.data('plugin.options');
-		this.$element.data('List', this);
 
-		this.init();
+		_.extend(this, List.DEFAULTS, options);
 	};
 
-	ztesoft.inherit(List, ztesoft.events.Event);
+	_.extend(List.prototype, ztesoft.events.Event);
 
-	List.prototype.init = function() {
-		this.config = $.extend({}, List.DEFAULTS, this.options, this.metadata);
-
+	List.prototype.render = function() {
 		var _this = this;
 		var html = [];
 
-		$.each(this.config.dataSource.source, function(index, element){
-			html.push('<li class="list-group-item">' + _this.itemToLabel(element) + '</li>');
+		_.each(this.dataSource, function(item, index){
+			html.push('<li>' + _this.itemToLabel(item) + '</li>');
 		});
 
-		this.$element.append(html.join(''));
-
-		this.$element.on('click.' + this.type, $.proxy(this._clickHandler, this));
-		this.config.dataSource.on('add', $.proxy(this._collectionAddHandler, this));
-		this.config.dataSource.on('remove', $.proxy(this._collectionRemoveHandler, this));
+		this.element.innerHTML = html.join('');
+		this.$element.on('click', _.bind(this._clickHandler, this));
 	};
 
 	List.prototype.itemToLabel = function(data) {
@@ -49,11 +42,58 @@
 		}
 	};
 
+	List.prototype.selectedIndex = function(index) {
+		if (arguments.length === 0) {
+			return this._selectedIndex;
+		}
+
+		this._setSelectedIndex(index);
+	};
+
+	List.prototype.selectedItem = function(value) {
+		if (arguments.length === 0) {
+			return this._selectedItem;
+		}
+
+		this.selectedIndex(_.indexOf(this.dataSource, value))
+	};
+
+	List.prototype.append = function(item) {
+		var li = document.createElement('li');
+		li.innerHTML = this.itemToLabel(item);
+		this.element.appendChild(li);
+		this.dataSource.push(item);
+	};
+
+	List.prototype.appendAt = function(item, index) {
+		var li = document.createElement('li');
+		li.innerHTML = this.itemToLabel(item);
+
+		var refLi = this.element.children[index];
+		this.element.insertBefore(li, refLi);
+		this.dataSource.splice(index, 0, item);
+	};
+
+	List.prototype.remove = function(index) {
+		this.element.removeChild(this.element.children[index]);
+		this.dataSource.splice(index, 1);
+	};
+
+	List.prototype.update = function(item) {
+		var index = _.indexOf(this.dataSource, item);
+		var li = this.element.children[index];
+		li.innerHTML = this.itemToLabel(item);
+	};
+
+	List.prototype.destory = function() {
+		this.element.remove();
+	};
+
 	List.prototype.seekSelectedItem = function(data) {
-		var i, index = -1, n = this.config.dataSource.length;
+		var i, index = -1, n = this.dataSource.length;
 		if (this.dataKeyField) {
 			for (i = 0; i < n; i++) {
-				if (this.config.dataSource[i][dataKeyField] == data) {
+				if (this.dataSource[i][dataKeyField] == data) {
 					index = i;
 					break;
 				}
@@ -61,7 +101,7 @@
 		}
 		else {
 			for (i = 0; i < n; i++) {
-				if (this.config.dataSource[i] == data) {
+				if (this.dataSource[i] == data) {
 					index = i;
 					break;
 				}
@@ -69,59 +109,39 @@
 		}
 
 		if (index != -1) {
-			this._setSelected(index, this.$element.find('li').eq(index));
+			this._setSelectedIndex(index);
 		}
 	};
 
-	List.prototype._setSelected = function(index, $item) {
-		if (this.$selectedItem) {
-			this.$selectedItem.removeClass('active');
+	List.prototype._setSelectedIndex = function(index) {
+		var oldIndex = this._selectedIndex;
+		if (oldIndex === index) {
+			return;
 		}
 
-		this.$selectedItem = $item;
-		this.$selectedItem.addClass('active');
-		this.selectedIndex = index;
-		this.selectedItem = this.config.dataSource.getItemAt(index);
-		this.trigger('change.' + this.type);
+		var children = this.element.children;
+		if (oldIndex !== -1) {
+			ztesoft.removeClass(children[oldIndex], 'active');
+		}
+
+		ztesoft.addClass(children[index], 'active');
+		this._selectedIndex = index;
+		this._selectedItem = this.dataSource[index];
+		this.trigger('change');
 	};
 
 	List.prototype._clickHandler = function(event) {
-		var $target = $(event.target);
-		if ($target.is('li')) {
-			this._setSelected(this.$element.find('li').index($target), $target);
-			this.trigger('click.' + this.type);
+		if (event.target.tagName === 'LI') {
+			var index = _.indexOf(this.element.children, event.target);
+			this.selectedIndex(index);
+			this.trigger('itemClick');
 		}
 	};
 
-	List.prototype._collectionAddHandler = function(item, index) {
-		var $item = $('<li class="list-group-item">' + this.itemToLabel(item) + '</li>');
-		this.$element.find('li').eq(index - 1).after($item);
-		this._setSelected(index, $item);
-	};
-
-	List.prototype._collectionRemoveHandler = function(index) {
-		this.$element.find('li').eq(index).remove();
-	};
-
 	List.DEFAULTS = {
-		dataSource:[],
 		rowCount: 6,
 		labelField:null,
 		labelFunction:null,
 		dataKeyField:null
-	}
-
-	var old = $.fn.list;
-
-	$.fn.list = function(options) {
-		return this.each(function() {
-			new List(this, options);
-		})
-	}
-
-	$.fn.list.noConflict = function() {
-		$.fn.list = old;
-		return this;
-	}
-
-}(window.jQuery, window, document));
+	};
+})();

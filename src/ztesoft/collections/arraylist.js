@@ -6,7 +6,7 @@
 		this.source = source;
 	}
 
-	ztesoft.inherit(ArrayList, ztesoft.events.Event);
+	_.extend(ArrayList.prototype, Backbone.Events);
 
 	ArrayList.prototype.source = function() {
 		return this.source;

@@ -2,13 +2,10 @@
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var TabNavigator = ns.TabNavigator = function(element, options) {
-		this.options = options;
-		this.$element = $(element);
-
-		this.$element.data('TabNavigator', this);
+		this.element = element;
 	};
 
-	ztesoft.inherit(TabNavigator, ztesoft.events.Event);
+	_.extend(TabNavigator.prototype, ztesoft.events.Event);
 
 	TabNavigator.prototype.init = function() {
 		this.viewstack = this.$element.children('div').viewstack();

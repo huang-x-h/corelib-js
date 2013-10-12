@@ -17,7 +17,7 @@
 			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(2)">Message</button>
 			  		<button type="button" class="btn btn-default" onclick="setSelectedIndex(3)">Setting</button>
 			  	</div>
-					<div class="tab-content">
+					<div id="viewstack" class="tab-content">
 					  <div class="tab-pane active" id="home">Home</div>
 					  <div class="tab-pane" id="profile">Profile</div>
 					  <div class="tab-pane" id="messages">Message</div>
@@ -27,13 +27,12 @@
 			</div>
 		</div>
 		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../libs/underscore.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/components/viewstack.js"></script>
 		<script type="text/javascript">
-			$('.tab-content').viewstack();
-
-			var viewstack = $('.tab-content').data('ViewStack');
+			var viewstack = new ztesoft.components.ViewStack(document.getElementById('viewstack'));
 			console.log(viewstack.selectedIndex());
 
 			function setSelectedIndex(index) {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>DatePicker Example</title>
+		<link rel="stylesheet" href="../css/bootstrap.css">
+		<link rel="stylesheet" href="../css/datepicker.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+			  <div class="panel-heading">DateTimePicker Example</div>
+			  <div class="panel-body">
+			    <div id="dp" class="input-group date">
+				    <input class="form-control" size="16" type="text" value="">
+				    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+					</div>
+
+					<div class="tooltip fade top in" style="top: 40px; left: 599.5px; display: block;"><div class="tooltip-arrow"></div><div class="tooltip-inner">Default tooltip</div></div>
+			  </div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/datepicker.js"></script>
+		<script type="text/javascript">
+			$('#dp').datepicker();
+		</script>
+	</body>
+</html>

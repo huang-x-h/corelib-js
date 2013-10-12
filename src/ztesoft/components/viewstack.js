@@ -1,64 +1,51 @@
-(function($, undefined) {
+(function() {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var ViewStack = ns.ViewStack = function(element, options) {
-		this.options = options;
-		this.$element = $(element);
-		this.$element.data('ViewStack', this);
+		this.element = element;
+		
+		var div = this.element.querySelector('.active');
+		if (div) {
+			this._selectedIndex = _.indexOf(this.element.children, div);
+		}
+		else {
+			this._selectedIndex = -1;
+		}
 	};
 
-	ztesoft.inherit(ViewStack, ztesoft.events.Event);
+	_.extend(ViewStack.prototype, ztesoft.events.Event);
 
 	ViewStack.prototype.selectedIndex = function(index) {
-		var $children = this.$element.children();
-		var $activeItem = this.$element.children('.active');
-		var selectedIndex = $children.index($activeItem);
-
 		if (arguments.length === 0) {
-			return selectedIndex;
+			return this._selectedIndex;
 		}
 
-		if (index < 0 || index > $children.length) {
+		this._setSelectedIndex(index);
+	};
+
+	ViewStack.prototype.append = function(element) {
+		this.element.appendChild(li);
+	};
+
+	ViewStack.prototype.appendAt = function(element, index) {
+		var refElement = this.element.children[index];
+		this.element.insertBefore(element, refElement);
+	};
+
+	ViewStack.prototype._setSelectedIndex = function(index) {
+		var oldIndex = this._selectedIndex;
+		if (oldIndex === index) {
 			return;
 		}
 
-		if (selectedIndex !== index) {
-			$activeItem.removeClass('active');
+		var children = this.element.children;
+		if (oldIndex !== -1) {
+			ztesoft.removeClass(children[oldIndex], 'active');
 		}
 
-		$children.eq(index).addClass('active');
-
+		ztesoft.addClass(children[index], 'active');
+		this._selectedIndex = index;
 		this.trigger('change');
-	}
+	};
 
-	ViewStack.prototype.addChild = function(element) {
-		var index = this.$element.children('.tab-pane').length;
-		this.addChildAt(element, index);
-	}
-
-	ViewStack.prototype.addChildAt = function(element, index) {
-		var $children = this.$element.children('.tab-pane');
-		if (index === $children.length) {
-			$element.append(element);
-		}
-		else {
-			$children.eq(index).before(element);
-		}
-		
-		this.trigger('childAdd', element, index);
-	}
-
-	var old = $.fn.viewstack;
-
-	$.fn.viewstack = function(options) {
-		return this.each(function() {
-			new ViewStack(this, options);
-		})
-	}
-
-	$.fn.viewstack.noConflict = function() {
-		$.fn.viewstack = old;
-		return this;
-	}
-
-}(window.jQuery));
+})();

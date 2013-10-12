@@ -5,68 +5,42 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<title>List</title>
 			<link rel="stylesheet" href="../css/bootstrap.css">
+			<link rel="stylesheet" href="../css/components.css">
 	</head>
 	<body>
 		<div class="container">
 			<div class="panel panel-default">
 			  <div class="panel-heading">List Example</div>
-			  <div class="panel-body">
-			    <ul id="list" class="list-group"></ul>
-			    <ul class="list-group">
-					  <li class="list-group-item">Cras justo odio</li>
-					  <li class="list-group-item">Dapibus ac facilisis in</li>
-					  <li class="list-group-item">Morbi leo risus</li>
-					  <li class="list-group-item">Porta ac consectetur ac</li>
-					  <li class="list-group-item">Vestibulum at eros</li>
-					</ul>
-			    <div class="row">
-			    	<div class="col-md-1">
-			    		<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
-			    	</div>
-			    	<div class="col-md-1">
-			    		<button type="button" class="btn btn-default" onclick="delHandler()">Delete</button>
-			    	</div>
+			  <div class="panel-body" style="height:200px;">
+			  	<ul id="list" class="list"></ul>
+			    <div>
+			    	<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
+			    	<button type="button" class="btn btn-default" onclick="delHandler()">Delete</button>
 			    </div>
 			  </div>
-
-		   	<!-- <div class="btn-group open">
-				  <button type="button" class="btn btn-default">Action</button>
-				  <button type="button" class="btn btn-default">
-				    <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a href="#">Action</a></li>
-				    <li><a href="#">Another action</a></li>
-				    <li><a href="#">Something else here</a></li>
-				    <li class="divider"></li>
-				    <li><a href="#">Separated link</a></li>
-				  </ul>
-				</div> -->
 			</div>
 		</div>
-		<script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../libs/underscore.js"></script>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
-		<script type="text/javascript" src="../src/ztesoft/collections/arraylist.js"></script>
 		<script type="text/javascript">
-			var component = $('#list').list({
-				'dataSource':new ztesoft.collections.ArrayList(['Hello', 'World'])
-			}).data('List');
-			// console.log(component);
+			var list = new ztesoft.components.List(document.getElementById('list'), {
+				dataSource:['Item A', 'Item B', 'Item C']
+			});
+			list.render();
 			
-			component.on('click.List', function(event){
-				console.log(component.selectedItem);
+			list.on('itemClick', function(){
+				console.log(list.selectedItem());
 			});
 
 			function addHandler() {
-				component.config.dataSource.addItem('Add Item');
+				list.appendAt('Add Item', 0);
 			}
 
 			function delHandler() {
-				console.log(component.selectedItem);
-				component.config.dataSource.removeItem(component.selectedItem);
+				list.remove(list.selectedIndex());
 			}
 		</script>
 	</body>

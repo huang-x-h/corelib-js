@@ -1,0 +1,38 @@
+.list {
+	min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0; // override default ul
+  list-style: none;
+  font-size: @font-size-base;
+  background-color: @dropdown-bg;
+  border: 1px solid @dropdown-fallback-border; // IE8 fallback
+  border: 1px solid @dropdown-border;
+
+	> li {
+		display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: @line-height-base;
+    color: @dropdown-link-color;
+    white-space: nowrap;
+	}
+}
+
+// Hover/Focus state
+.list > li {
+  &:hover,
+  &:focus {
+    background-color: @list-group-hover-bg;
+  }
+}
+
+// Active state
+.list > .active {
+  &,
+  &:hover,
+  &:focus {
+    color: @list-group-active-color;
+    background-color: @list-group-active-bg;
+  }
+}

@@ -1,14 +1,10 @@
-(function($, undefined) {
-	var ztesoft = window.ztesoft;
-
+(function() {
   var ns = ztesoft.namespace("ztesoft.events");
 
   var array = [];
   var slice = array.slice;
 
-  ns.Event = function() {};
-
-  ns.Event.prototype = {
+  ns.Event = {
 		on: function(name, callback, context) {
       if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
       this._events || (this._events = {});
@@ -118,4 +114,4 @@
     }
   };
 
-}(window.jQuery));
+})();
