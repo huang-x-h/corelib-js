@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>Tree</title>
+			<link rel="stylesheet" href="../css/bootstrap.css">
+			<link rel="stylesheet" href="../css/components.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+			  <div class="panel-heading">Tree Example</div>
+			  <div class="panel-body">
+			  	<div id='tree' class="tree">
+			  		<ul style="padding-left: 20px">
+			        <li class="parent_li" role="treeitem">
+			            <span title="Collapse this branch"><i class="icon-folder-open glyphicon glyphicon-minus-sign"></i> Parent</span>
+			            <ul style="padding-left: 20px">
+			                <li class="parent_li" role="treeitem" style="display: list-item;">
+			                	<span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Child</span>
+			                    <ul style="padding-left: 20px">
+			                        <li style="display: list-item;">
+				                        <span><i class="icon-leaf"></i> Grand Child</span>
+			                        </li>
+			                    </ul>
+			                </li>
+			                <li class="parent_li" role="treeitem" style="display: list-item;">
+			                	<span title="Expand this branch"><i class="glyphicon glyphicon-plus-sign"></i> Child</span>
+			                    <ul style="padding-left: 20px">
+			                        <li style="display: none;">
+				                        <span><i class="icon-leaf"></i> Grand Child</span>
+			                        </li>
+			                        <li class="parent_li" role="treeitem" style="display: none;">
+			                        	<span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Grand Child</span>
+			                            <ul style="padding-left: 20px">
+			                                <li class="parent_li" role="treeitem">
+				                                <span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Great Grand Child</span>
+					                            <ul style="padding-left: 20px">
+					                                <li>
+						                                <span><i class="icon-leaf"></i> Great great Grand Child</span>
+					                                </li>
+					                                <li>
+						                                <span><i class="icon-leaf"></i> Great great Grand Child</span>
+					                                </li>
+					                             </ul>
+			                                </li>
+			                                <li>
+				                                <span><i class="icon-leaf"></i> Great Grand Child</span>
+			                                </li>
+			                                <li>
+				                                <span><i class="icon-leaf"></i> Great Grand Child</span>
+			                                </li>
+			                            </ul>
+			                        </li>
+			                        <li style="display: none;">
+				                        <span><i class="icon-leaf"></i> Grand Child</span>
+			                        </li>
+			                    </ul>
+			                </li>
+			            </ul>
+			        </li>
+			        <li class="parent_li" role="treeitem">
+			            <span title="Collapse this branch"><i class="icon-folder-open glyphicon glyphicon-minus-sign"></i> Parent2</span>
+			            <ul style="padding-left: 20px">
+			                <li style="display: list-item;">
+			                	<span><i class="icon-leaf"></i> Child</span>
+					        </li>
+					    </ul>
+			        </li>
+			    </ul>
+					</div>
+			  </div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+	        $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
+	        $('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function (e) {
+	        var children = $(this).parent('li.parent_li').find(' > ul > li');
+	        if (children.is(':visible')) {
+	                    children.hide('fast');
+	                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus-sign').removeClass('glyphicon-minus-sign');
+	        }
+	        else {
+	                    children.show('fast');
+	                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus-sign').removeClass('glyphicon-plus-sign');
+	        }
+	        e.stopPropagation();
+	    });
+		});
+		</script>
+	</body>
+</html>

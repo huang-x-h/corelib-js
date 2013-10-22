@@ -6,7 +6,7 @@
 		_.extend(this, NumericStepper.DEFAULTS, options);
 	};
 
-	_.extend(NumericStepper.prototype, ztesoft.event.Events);
+	_.extend(NumericStepper.prototype, ztesoft.events.Events);
 
 	NumericStepper.prototype.value = function(value) {
 		if (arguments.length === 0) {

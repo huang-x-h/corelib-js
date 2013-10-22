@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>DataGrid</title>
+			<link rel="stylesheet" href="../css/bootstrap.css">
+			<link rel="stylesheet" href="../css/components.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+			  <div class="panel-heading">DataGrid Example</div>
+			  <div class="panel-body">
+			  	<div id='grid'>
+
+					</div>
+			  </div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/datagrid.js"></script>
+		<script type="text/javascript">
+			var datagrid = new ztesoft.components.DataGrid(document.getElementById('grid'), {
+				'height': 300,
+				'columns': [
+					{dataField: 'Name', width: '262px'},
+					{dataField: 'Country', width: '157px'},
+					{dataField: 'Population', width: '258px'},
+					{dataField: 'Type', width: ''}
+				],
+				'dataSource': [
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'},
+					{'Name': 'Majuro', 'Country': 'MH', 'Population': 25400, 'Type': 'capital of a political entity'}
+				]
+			});
+			datagrid.render();
+		</script>
+	</body>
+</html>

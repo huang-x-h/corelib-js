@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function() {
   var ztesoft = window.ztesoft = window.ztesoft || {};
 
   var StringProto = String.prototype;
@@ -76,4 +76,4 @@
     return ns;
   };
 
-}(window.jQuery));
+})();

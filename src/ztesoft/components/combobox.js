@@ -2,20 +2,33 @@
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var ComboBox = ns.ComboBox = function(element, options) {
-		this.$element = $(element);
-		this.$element.data('ComboBox', this);
+		this.element = element;
+		this.textField = this.element.querySelector('input');
+		this.addOn = this.element.querySelector('.input-group-addon');
+		_.extend(this, ComboBox.DEFAULTS, options);
+		$(this.addOn).on('click', _.bind(this.show, this));
 	};
 
-	ztesoft.inherit(ComboBox, ztesoft.events.Event);
+	_.extend(ComboBox.prototype, ztesoft.events.Event);
 
-	ComboBox.prototype.dataSource = function(array) {
-		if (arguments.length === 0) {
-			return this._dataSource;
-		}
-
-		this._dataSource = array;
-		this._setDataSource();
+	ComboBox.DEFAULTS = {
+		'labelField': null,
+		'labelFunction': null
 	}
+
+	ComboBox.prototype.render = function() {
+		// $(this.element).append('<ul class="dropdown-menu"></ul>');
+		var ul = document.createElement('ul');
+		ul.setAttribute('class', 'dropdown-menu');
+		this.element.appendChild(ul);
+		this.list = new ns.List(ul, {
+			'labelField': this.labelField,
+			'labelFunction': this.labelFunction,
+			'dataSource': this.dataSource
+		});
+		this.list.render();
+		this.list.on('itemClick', _.bind(this._itemClickHandler, this));
+	};
 
 	ComboBox.prototype.selectedIndex = function(index) {
 		if (arguments.length === 0) {
@@ -23,7 +36,7 @@
 		}
 
 		this._setSelectedIndex(index);
-	}
+	};
 
 	ComboBox.prototype.selectedItem = function(value) {
 		if (arguments.length === 0) {
@@ -31,44 +44,38 @@
 		}
 
 		this._selectedItem = value;
-	}
+	};
 
 	ComboBox.prototype._setSelectedIndex = function(index) {
-		if (this._selectedIndex === index) {
-			return;
-		}
-
-		var $children = this.$element.children();
-
-		if (this._selectedIndex >= 0) {
-			$children.eq(this._selectedIndex).removeProp('selected');
-		}
 		
-		$children.eq(index).prop('selected');
-		this._selectedIndex = index;
-	}
+	};
 
-	ComboBox.prototype._setDataSource = function() {
-		var html = [];
-		$.each(this._dataSource, function(index, element) {
-			html.push('<option>' + element + '</option>');
-		});
+	ComboBox.prototype._itemClickHandler = function() {
+		this._selectedIndex = this.list.selectedIndex();
+		this._selectedItem = this.list.selectedItem();
+		this.textField.value = this.list.itemToLabel(this._selectedItem);
+		this.hide();
+	};
 
-		this.$element.append(html.join(''));
-		this.selectedIndex = 0;
-	}
+	ComboBox.prototype.enable = function() {
 
-	var old = $.fn.combobox;
+	};
 
-	$.fn.combobox = function(options) {
-		return this.each(function() {
-			new ComboBox(this, options);
-		})
-	}
+	ComboBox.prototype.disable = function() {
 
-	$.fn.combobox.noConflict = function() {
-		$.fn.combobox = old;
-		return this;
-	}
+	};
 
-}(window.jQuery));
+	ComboBox.prototype.show = function() {
+		ztesoft.addClass(this.element, 'open');
+	};
+
+	ComboBox.prototype.hide = function() {
+		ztesoft.removeClass(this.element, 'open');
+	};
+
+	ComboBox.prototype.destory = function() {
+		this.list.remove();
+		this.addOn.off('click');
+	};
+
+})(window.jQuery);

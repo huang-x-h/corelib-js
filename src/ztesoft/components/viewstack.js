@@ -32,6 +32,11 @@
 		this.element.insertBefore(element, refElement);
 	};
 
+	ViewStack.prototype._setSelectedId = function(id) {
+		var child = this.element.querySelector('.active');
+		this._setSelectedIndex(this.element.children.indexOf(child));
+	}
+
 	ViewStack.prototype._setSelectedIndex = function(index) {
 		var oldIndex = this._selectedIndex;
 		if (oldIndex === index) {

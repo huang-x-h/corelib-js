@@ -1,53 +1,47 @@
-(function($, undefined) {
+(function() {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var TabNavigator = ns.TabNavigator = function(element, options) {
 		this.element = element;
+		this.tabBar = this.element.querySelector('.nav');
+		this.tabConent = this.element.querySelector('.tab-content');
+		this._selectedIndex = 0;
+		$(this.tabBar).on('click', _.bind(this._tabClickHandler, this));
 	};
 
 	_.extend(TabNavigator.prototype, ztesoft.events.Event);
 
-	TabNavigator.prototype.init = function() {
-		this.viewstack = this.$element.children('div').viewstack();
-		this.$element.children('ul').on('click', $.proxy(_tabClickHandler, this));
-	}
-
 	TabNavigator.prototype.selectedIndex = function(index) {
-		var $children = this.$element.children();
-		var $activeItem = this.$element.children('.active');
-		var selectedIndex = $children.index($activeItem);
-
 		if (arguments.length === 0) {
-			return this.viewstack.selectedIndex();
+			return this._selectedIndex;
 		}
 
-		if (index < 0 || index > $children.length) {
+		this._setSelectedIndex(index);
+	}
+
+	TabNavigator.prototype._setSelectedIndex = function(index) {
+		var oldIndex = this._selectedIndex;
+		if (oldIndex === index) {
 			return;
 		}
 
-		this.viewstack.selectedIndex(index);
+		var children = this.tabBar.children;
+		if (oldIndex !== -1) {
+			ztesoft.removeClass(children[oldIndex], 'active');
+			ztesoft.removeClass(this.tabConent.querySelector(children[oldIndex].firstChild.getAttribute('href')), 'active');
+		}
 
-		$children.eq(index).addClass('active');
-
+		ztesoft.addClass(children[index], 'active');
+		ztesoft.addClass(this.tabConent.querySelector(children[index].firstChild.getAttribute('href')), 'active');
+		this._selectedIndex = index;
 		this.trigger('change');
-	}
+	};
 
 	TabNavigator.prototype._tabClickHandler = function(event) {
-		var $li = $(event.target).parent('li');
-		var selectedIndex = 
+		var element = event.target;
+		if (element.tagName == 'A') {
+			event.preventDefault();
+			this._setSelectedIndex(_.indexOf(this.tabBar.children, element.parentElement));
+		}
 	}
-
-	var old = $.fn.tab;
-
-	$.fn.tabnavigator = function(options) {
-		return this.each(function() {
-			new TabNavigator(this, options);
-		})
-	}
-
-	$.fn.tabnavigator.noConflict = function() {
-		$.fn.tabnavigator = old;
-		return this;
-	}
-
-}(window.jQuery));
+})();

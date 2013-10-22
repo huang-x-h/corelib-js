@@ -3,17 +3,22 @@
 	<head>
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			<title>List</title>
+			<title>Tab Navigator</title>
 			<link rel="stylesheet" href="../css/bootstrap.css">
 	</head>
 	<body>
 		<div class="container">
 			<div class="panel panel-default">
-			  <div class="panel-heading">List Example</div>
+			  <div class="panel-heading">Tab Navigator Example</div>
 			  <div class="panel-body">
+			  	<div class="popover fade left in" style="top: 100px; left: 277.5px; display: block;">
+			  		<div class="arrow">
+			  			</div><h3 class="popover-title" style="display: none;"></h3>
+			  			<div class="popover-content">Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</div>
+			  		</div>
 			  	<div id="tabContainer">
 			  		<ul class="nav nav-tabs">
-					 		<li><a href="#home">Home</a></li>
+					 		<li class="active"><a href="#home">Home</a></li>
 						  <li><a href="#profile">Profile</a></li>
 						  <li><a href="#messages">Messages</a></li>
 						  <li><a href="#settings">Settings</a></li>
@@ -29,11 +34,16 @@
 			  </div>
 			</div>
 		</div>
+		<script type="text/javascript" src="../libs/underscore.js"></script>
 		<script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/tabnavigator.js"></script>
 		<script type="text/javascript">
-
+			var tabnavigator = new ztesoft.components.TabNavigator(document.getElementById('tabContainer'));
+			tabnavigator.on('change', function() {
+				console.log(tabnavigator.selectedIndex());
+			})
 		</script>
 	</body>
 </html>

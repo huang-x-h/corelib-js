@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>ComboBox</title>
+			<link rel="stylesheet" href="../css/bootstrap.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+			  <div class="panel-heading">ComboBox Example</div>
+			  <div class="panel-body">
+			  	<div id="selMonth" class="dropdown">
+			  		<div class="input-group">
+			  			<input type="text" readonly class="form-control">
+						  <span class="input-group-addon"><span class="caret"></span></span>
+						</div>
+			  	</div>
+			  </div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../libs/underscore.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/combobox.js"></script>
+		<script type="text/javascript">
+			var combobox = new ztesoft.components.ComboBox(document.getElementById('selMonth'), {
+				dataSource: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+			});
+			combobox.render();
+		</script>
+	</body>
+</html>

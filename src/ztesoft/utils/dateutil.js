@@ -16,6 +16,10 @@
 		return result;
 	}
 
+	function formatDate(date, format) {
+		
+	}
+
 	function add(date, multiplier, num) {
 		var resultTime = date.getTime() + multiplier * num;
 		return new Date(resultTime);
@@ -30,6 +34,9 @@
 		},
 		'addDays': function(date, days) {
 			return add(date, MILLIS_PER_DAY, days);
+		},
+		'format': function(date, pattern) {
+
 		}
 	};
 })();

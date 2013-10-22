@@ -10,8 +10,7 @@
 	DatePicker.DEFAULTS = {
 		'days':["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
 		'months':['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		'monthsShort':['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-		'formatString':'yyyy-mm-dd',
+		'formatString':'yyyy-MM-dd',
 		'weekStart':0,
 		'disabledDays':[],
 		'selectableRange':[]
@@ -51,6 +50,7 @@
 		this.$element.on('click', _.bind(this.show, this));
 		$(this._picker).on('click', _.bind(this._clickHandler, this));
 		$(this._picker).on('dblclick', _.bind(this._okHandler, this));
+		$(document).on('click', _.bind(this._mouseClickOutsideHandler, this));
 	};
 
 	DatePicker.prototype._updateMonth = function() {
@@ -70,7 +70,7 @@
 		}
 
 		i = 1;
-		while (i < days) {
+		while (i <= days) {
 			if (offset == 0) {
 				html.push('<tr>');
 			}
@@ -80,10 +80,11 @@
 			if (offset == 6) {
 				html.push('</tr>');
 				offset = 0;
-				continue;
+			}
+			else {
+				offset++;
 			}
 
-			offset++;
 			i++;			
 		}
 
@@ -137,15 +138,32 @@
 		var target = event.target;
 		if (target.tagName == 'TD' && target.textContent) {
 			this.date.setDate(parseInt(target.textContent));
+
+			var year = this.date.getFullYear();
+			var month = this.date.getMonth() + 1;
+			var day = this.date.getDate();
+			if (month < 10) month = '0' + month;
+			if (day < 10) day = '0' + day;
+			this.element.value = year + '-' + month + '-' + day;
+			this.hide();
 		}
 	};
 
-	DatePicker.prototype.place = function() {
+	DatePicker.prototype._mouseClickOutsideHandler = function(event) {
+		if (!((event.target == this.element) || (event.target == this._picker) || this._picker.contains(event.target))) {
+			this.hide();
+		}
+	}
 
+	DatePicker.prototype.place = function() {
+		var box = this.element.getBoundingClientRect();
+		this._picker.style.left = box.left + 'px';
+		this._picker.style.top = box.top + box.height + 'px'; 
 	};
 
 	DatePicker.prototype.show = function() {
 		this._picker.style.display = 'block';
+		this.place();
 	};
 
 	DatePicker.prototype.hide = function() {

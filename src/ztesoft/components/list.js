@@ -19,7 +19,7 @@
 		var html = [];
 
 		_.each(this.dataSource, function(item, index){
-			html.push('<li>' + _this.itemToLabel(item) + '</li>');
+			html.push('<li><a>' + _this.itemToLabel(item) + '</a></li>');
 		});
 
 		this.element.innerHTML = html.join('');
@@ -33,9 +33,9 @@
 
 		if (this.labelFunction != null) {
 			return this.labelFunction(data);
-		} 
+		}
 		else if (this.labelField != null) {
-			return data(this.labelField);
+			return data[this.labelField];
 		}
 		else {
 			return data;
@@ -131,8 +131,8 @@
 	};
 
 	List.prototype._clickHandler = function(event) {
-		if (event.target.tagName === 'LI') {
-			var index = _.indexOf(this.element.children, event.target);
+		if (event.target.tagName === 'A') {
+			var index = _.indexOf(this.element.children, event.target.parentElement);
 			this.selectedIndex(index);
 			this.trigger('itemClick');
 		}
