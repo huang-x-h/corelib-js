@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function() {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var ComboBox = ns.ComboBox = function(element, options) {
@@ -6,7 +6,7 @@
 		this.textField = this.element.querySelector('input');
 		this.addOn = this.element.querySelector('.input-group-addon');
 		_.extend(this, ComboBox.DEFAULTS, options);
-		$(this.addOn).on('click', _.bind(this.show, this));
+		this.addOn.addEventListener('click', _.bind(this.show, this));
 	};
 
 	_.extend(ComboBox.prototype, ztesoft.events.Event);
@@ -17,7 +17,6 @@
 	}
 
 	ComboBox.prototype.render = function() {
-		// $(this.element).append('<ul class="dropdown-menu"></ul>');
 		var ul = document.createElement('ul');
 		ul.setAttribute('class', 'dropdown-menu');
 		this.element.appendChild(ul);
@@ -47,7 +46,11 @@
 	};
 
 	ComboBox.prototype._setSelectedIndex = function(index) {
-		
+		this.list._setSelectedIndex(index);
+		this._selectedIndex = this.list.selectedIndex();
+		this._selectedItem = this.list.selectedItem();
+		this.textField.value = this.list.itemToLabel(this._selectedItem);
+		this.trigger('change');
 	};
 
 	ComboBox.prototype._itemClickHandler = function() {
@@ -75,7 +78,6 @@
 
 	ComboBox.prototype.destory = function() {
 		this.list.remove();
-		this.addOn.off('click');
 	};
 
-})(window.jQuery);
+})();

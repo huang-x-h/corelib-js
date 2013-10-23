@@ -7,7 +7,6 @@
 		this._selectedIndex = -1;
 
 		this.element = element;
-		this.$element = $(element);
 
 		_.extend(this, List.DEFAULTS, options);
 	};
@@ -23,7 +22,7 @@
 		});
 
 		this.element.innerHTML = html.join('');
-		this.$element.on('click', _.bind(this._clickHandler, this));
+		this.element.addEventListener('click', _.bind(this._clickHandler, this));
 	};
 
 	List.prototype.itemToLabel = function(data) {
