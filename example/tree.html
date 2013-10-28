@@ -12,97 +12,41 @@
 			<div class="panel panel-default">
 			  <div class="panel-heading">Tree Example</div>
 			  <div class="panel-body">
-			  	<div id='tree' class="tree">
-			  		<ul style="padding-left: 20px">
-			        <li class="parent_li" role="treeitem">
-			            <span title="Collapse this branch"><i class="icon-folder-open glyphicon glyphicon-minus-sign"></i> Parent</span>
-			            <ul style="padding-left: 20px">
-			                <li class="parent_li" role="treeitem" style="display: list-item;">
-			                	<span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Child</span>
-			                    <ul style="padding-left: 20px">
-			                        <li style="display: list-item;">
-				                        <span><i class="glyphicon glyphicon-file"></i> Grand Child</span>
-			                        </li>
-			                    </ul>
-			                </li>
-			                <li class="parent_li" role="treeitem" style="display: list-item;">
-			                	<span title="Expand this branch"><i class="glyphicon glyphicon-plus-sign"></i> Child</span>
-			                    <ul style="padding-left: 20px">
-			                        <li style="display: none;">
-				                        <span><i class="glyphicon glyphicon-file"></i> Grand Child</span>
-			                        </li>
-			                        <li class="parent_li" role="treeitem" style="display: none;">
-			                        	<span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Grand Child</span>
-			                            <ul style="padding-left: 20px">
-			                                <li class="parent_li" role="treeitem">
-				                                <span title="Collapse this branch"><i class="glyphicon glyphicon-minus-sign"></i> Great Grand Child</span>
-					                            <ul style="padding-left: 20px">
-					                                <li>
-						                                <span><i class="glyphicon glyphicon-file"></i> Great great Grand Child</span>
-					                                </li>
-					                                <li>
-						                                <span><i class="glyphicon glyphicon-file"></i> Great great Grand Child</span>
-					                                </li>
-					                             </ul>
-			                                </li>
-			                                <li>
-				                                <span><i class="glyphicon glyphicon-file"></i> Great Grand Child</span>
-			                                </li>
-			                                <li>
-				                                <span><i class="glyphicon glyphicon-file"></i> Great Grand Child</span>
-			                                </li>
-			                            </ul>
-			                        </li>
-			                        <li style="display: none;">
-				                        <span><i class="glyphicon glyphicon-file"></i> Grand Child</span>
-			                        </li>
-			                    </ul>
-			                </li>
-			            </ul>
-			        </li>
-			        <li class="parent_li" role="treeitem">
-			            <span title="Collapse this branch"><i class="icon-folder-open glyphicon glyphicon-minus-sign"></i> Parent2</span>
-			            <ul style="padding-left: 20px">
-			                <li style="display: list-item;">
-			                	<span><i class="glyphicon glyphicon-file"></i> Child</span>
-					        </li>
-					    </ul>
-			        </li>
-			    </ul>
-					</div>
+			  	<div id="tree" class="tree">
+			  		
+			  	</div>
 			  </div>
 			</div>
 		</div>
 		<script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
+		<script type="text/javascript" src="../src/ztesoft/components/tree.js"></script>
 		<script type="text/javascript">
-			var obj = {};
-			var _index = 1;
-			Object.defineProperty(obj, 'index', {
-				get: function(){return _index},
-				set: function(index){_index = index}
+			var tree = new ztesoft.components.Tree(document.getElementById('tree'), {
+				'dataSource': [
+					{label:'Parent', children: [
+						{label: 'Child1'}, 
+						{label: 'Child2', children: [
+							{label: 'Grand Child1'},
+							{label: 'Grand Child2'},
+							{label: 'Grand Child3'}]}, 
+						{label: 'Child3'}]}],
+				'labelField': 'label'
 			});
+			tree.render();
 
-			console.log(obj.index);
-			obj.index++;
-			console.log(obj.index);
+			// var obj = {};
+			// var _index = 1;
+			// Object.defineProperty(obj, 'index', {
+			// 	get: function(){return _index},
+			// 	set: function(index){_index = index}
+			// });
 
-			$(document).ready(function() {
-	        $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
-	        $('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function (e) {
-	        var children = $(this).parent('li.parent_li').find(' > ul > li');
-	        if (children.is(':visible')) {
-	        	children.css({'display': 'none'});
-	                    // children.hide('fast');
-	                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus-sign').removeClass('glyphicon-minus-sign');
-	        }
-	        else {
-	                    children.show('fast');
-	                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus-sign').removeClass('glyphicon-plus-sign');
-	        }
-	        e.stopPropagation();
-	    });
-		});
+			// console.log(obj.index);
+			// obj.index++;
+			// console.log(obj.index);
 		</script>
 	</body>
 </html>

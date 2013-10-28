@@ -12,7 +12,7 @@
 			<div class="panel panel-default">
 			  <div class="panel-heading">List Example</div>
 			  <div class="panel-body" style="height:200px;">
-			  	<ul id="list" class="list"></ul>
+			  	<div id="list"></div>
 			    <div>
 			    	<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
 			    	<button type="button" class="btn btn-default" onclick="delHandler()">Delete</button>
@@ -21,10 +21,14 @@
 			</div>
 		</div>
 		<script type="text/javascript" src="../libs/underscore.js"></script>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
 		<script type="text/javascript">
+			var compiled = _.template("hello: <%= name %>");
+			console.log(compiled({name: 'moe'}));
+
 			var list = new ztesoft.components.List(document.getElementById('list'), {
 				dataSource:['Item A', 'Item B', 'Item C']
 			});
