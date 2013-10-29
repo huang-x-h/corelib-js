@@ -1,4 +1,4 @@
-(function() {
+(function($, undefined) {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var ComboBox = ns.ComboBox = function(element, options) {
@@ -17,15 +17,13 @@
 	}
 
 	ComboBox.prototype.render = function() {
-		var ul = document.createElement('ul');
-		ul.setAttribute('class', 'dropdown-menu');
-		this.element.appendChild(ul);
-		this.list = new ns.List(ul, {
+		this.list = new ns.List(this.element, {
 			'labelField': this.labelField,
 			'labelFunction': this.labelFunction,
 			'dataSource': this.dataSource
 		});
 		this.list.render();
+    this.list.$ul.addClass('popup');
 		this.list.on('itemClick', _.bind(this._itemClickHandler, this));
 	};
 
@@ -80,4 +78,4 @@
 		this.list.remove();
 	};
 
-})();
+})(window.jQuery);

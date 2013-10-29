@@ -1,10 +1,9 @@
-(function() {
+(function($, undefined) {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var DatePicker = ns.DatePicker = function(element, options) {
-		this.element = element;
 		this.$element = $(element);
-		_.extend(this, DatePicker.DEFAULTS, options);
+    $.extend(this, DatePicker.DEFAULTS, options);
 	};
 
 	DatePicker.DEFAULTS = {
@@ -20,7 +19,7 @@
 		this.date = new Date();
 
 		this._picker = document.createElement('div');
-		this._picker.className = 'datepicker-dropdown dropdown-menu';
+		this._picker.className = 'datepicker popup';
 		this._picker.innerHTML = '<table class="table-condensed">'+
 				'<thead>'+
 					'<tr>'+
@@ -45,12 +44,12 @@
 		thead.innerHTML += html.join('');
 
 		this._updateFillDays();
-		document.body.appendChild(this._picker);
+		this.$element.append(this._picker);
 
-		this.$element.on('click', _.bind(this.show, this));
-		$(this._picker).on('click', _.bind(this._clickHandler, this));
-		$(this._picker).on('dblclick', _.bind(this._okHandler, this));
-		$(document).on('click', _.bind(this._mouseClickOutsideHandler, this));
+    this.$element.on('click', '.input-group-addon', $.proxy(this.show, this));
+		$(this._picker).on('click', $.proxy(this._clickHandler, this));
+		$(this._picker).on('dblclick', $.proxy(this._okHandler, this));
+//		$(document).on('click', $.proxy(this._mouseClickOutsideHandler, this));
 	};
 
 	DatePicker.prototype._updateMonth = function() {
@@ -60,7 +59,6 @@
 	DatePicker.prototype._updateFillDays = function() {
 		var year = this.date.getFullYear();
 		var month = this.date.getMonth();
-		// var day = this.date.getDate();
 		var offset = this._getOffsetOfMonth(year, month);
 		var days = this._getNumberOfDaysInMonth(year, month);
 		var html = ['<tr>'];
@@ -144,7 +142,7 @@
 			var day = this.date.getDate();
 			if (month < 10) month = '0' + month;
 			if (day < 10) day = '0' + day;
-			this.element.value = year + '-' + month + '-' + day;
+			this.$element.find('input').val(year + '-' + month + '-' + day);
 			this.hide();
 		}
 	};
@@ -155,22 +153,15 @@
 		}
 	}
 
-	DatePicker.prototype.place = function() {
-		var box = this.element.getBoundingClientRect();
-		this._picker.style.left = box.left + 'px';
-		this._picker.style.top = box.top + box.height + 'px'; 
-	};
-
 	DatePicker.prototype.show = function() {
-		this._picker.style.display = 'block';
-		this.place();
+    this.$element.addClass('open');
 	};
 
 	DatePicker.prototype.hide = function() {
-		this._picker.style.display = 'none';
+    this.$element.removeClass('open');
 	};
 
 	DatePicker.prototype.destory = function() {
 		this._picker.remove();
 	};
-})();
+})(window.jQuery);

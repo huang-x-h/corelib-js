@@ -2,12 +2,9 @@
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var List = ns.List = function(element, options) {
-		this.dataSource = null;
+        this.$element = $(element);
 		this._selectedItem = null;
 		this._selectedIndex = -1;
-
-		this.$ul = $('<ul class="list"></ul>');
-		$(element).append(this.$ul);
 
 		$.extend(this, List.DEFAULTS, options);
 	};
@@ -16,13 +13,14 @@
 
 	List.prototype.render = function() {
 		var that = this;
-		var html = [];
+		var html = ['<ul class="list">'];
+        this.dataSource.forEach(function(item, index) {
+            html.push('<li><a href="#">' + that.itemToLabel(item) + '</a></li>');
+        });
+        html.push('</ul>');
 
-		$.each(this.dataSource, function(index, item){
-			html.push('<li><a href="#">' + that.itemToLabel(item) + '</a></li>');
-		});
-
-		this.$ul.append(html.join(''));
+        this.$ul = $(html.join(''));
+		this.$element.append(this.$ul);
 		this.$ul.on('click', $.proxy(this._clickHandler, this));
 	};
 

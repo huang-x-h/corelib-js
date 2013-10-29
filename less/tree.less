@@ -2,14 +2,11 @@
 .tree {
   .border-radius(@border-radius-base);
   border: 1px solid @gray-light;
-  margin-bottom: 10px;
-  max-height: 300px;
-  min-height: 20px;
   overflow-y: auto;
-  padding: 19px;
+  padding: 4px;
 
   ul {
-    padding-left: 20px;
+    padding-left: 0px;
     list-style: none;
   }
 
@@ -44,4 +41,14 @@
 
 .tree-indentation {
   width: 14px;
+}
+
+.children-list {
+  display: none;
+}
+
+.open {
+  > .children-list {
+    display: block;
+  }
 }

@@ -20,7 +20,7 @@
       var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ')
                               .replace(/[\n\t]/g, " ");
 
-      _.each(cssClasses.split(' '), function(cssClass) {
+      cssClasses.split(' ').forEach(function(cssClass) {
         cssClass = ztesoft.trim(cssClass);
         if (existingClasses.indexOf(' ' + cssClass + ' ') === -1) {
           existingClasses += cssClass + ' ';
@@ -33,7 +33,7 @@
 
   ztesoft.removeClass = function(element, cssClasses) {
     if (cssClasses && element.setAttribute) {
-      _.each(cssClasses.split(' '), function(cssClass) {
+      cssClasses.split(' ').forEach(function(cssClass) {
         element.setAttribute('class', ztesoft.trim(
             (" " + (element.getAttribute('class') || '') + " ")
             .replace(/[\n\t]/g, " ")

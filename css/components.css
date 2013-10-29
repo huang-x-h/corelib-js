@@ -1,8 +1,10 @@
-/*! corelib-js 25-10-2013 */
+/*! corelib-js 29-10-2013 */
 .list {
+  width: 100%;
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
+  overflow-y: auto;
   font-size: 14px;
   list-style: none;
   background-color: #ffffff;
@@ -36,19 +38,47 @@
   outline: 0;
 }
 
+.numericstepper {
+  padding: 0;
+  border: 0;
+}
+
+.numericstepper > .btn:first-child {
+  position: relative;
+  top: 0;
+  float: left;
+  padding: 0 6px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  outline: 0;
+}
+
+.numericstepper > .btn:last-child {
+  position: relative;
+  top: 0;
+  float: left;
+  padding: 0 6px;
+  margin-top: -1;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  outline: 0;
+}
+
 /*!
  * Datepicker for Bootstrap
  *
  */
 
-.datepicker-dropdown {
+.datepicker {
   padding: 4px;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
 }
 
-.datepicker-dropdown table {
+.datepicker table {
   margin: 0;
   -webkit-user-select: none;
    -khtml-user-select: none;
@@ -58,8 +88,8 @@
   -webkit-touch-callout: none;
 }
 
-.datepicker-dropdown td,
-.datepicker-dropdown th {
+.datepicker td,
+.datepicker th {
   width: 20px;
   height: 20px;
   text-align: center;
@@ -69,41 +99,41 @@
           border-radius: 4px;
 }
 
-.datepicker-dropdown table tr td.day:hover {
+.datepicker table tr td.day:hover {
   cursor: pointer;
   background: #eeeeee;
 }
 
-.datepicker-dropdown table tr td.disabled,
-.datepicker-dropdown table tr td.disabled:hover {
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
   color: #999999;
   cursor: default;
   background: none;
 }
 
-.datepicker-dropdown table tr td.selected,
-.datepicker-dropdown table tr td.selected:hover {
+.datepicker table tr td.selected,
+.datepicker table tr td.selected:hover {
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #808080;
 }
 
-.datepicker-dropdown table tr td.active,
-.datepicker-dropdown table tr td.active:hover {
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover {
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #425eca;
 }
 
-.datepicker-dropdown th.datepicker-switch {
+.datepicker th.datepicker-switch {
   width: 145px;
 }
 
-.datepicker-dropdown thead tr:first-child th {
+.datepicker thead tr:first-child th {
   cursor: pointer;
 }
 
-.datepicker-dropdown thead tr:first-child th:hover {
+.datepicker thead tr:first-child th:hover {
   background: #eeeeee;
 }
 
@@ -129,10 +159,7 @@
 /* collapsible tree */
 
 .tree {
-  max-height: 300px;
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 10px;
+  padding: 4px;
   overflow-y: auto;
   border: 1px solid #999999;
   -webkit-border-radius: 4px;
@@ -141,7 +168,7 @@
 }
 
 .tree ul {
-  padding-left: 20px;
+  padding-left: 0;
   list-style: none;
 }
 
@@ -173,4 +200,40 @@
 
 .tree-indentation {
   width: 14px;
+}
+
+.children-list {
+  display: none;
+}
+
+.open > .children-list {
+  display: block;
+}
+
+.popup-wrapper {
+  position: relative;
+}
+
+.popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  list-style: none;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+
+.open > .popup {
+  display: block;
 }
