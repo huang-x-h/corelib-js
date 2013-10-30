@@ -8,7 +8,7 @@
   .btn {
     position: relative;
     width: 20px;
-    height: 14px;
+    height: 16px;
     padding: 0;
 
     &.disabled {
@@ -16,27 +16,27 @@
     }
   }
 
-  .numericstepper-buttons {
+  .spinner-buttons {
     position: relative;
     float: left;
-    height: 28px;
+    height: 32px;
     width: 20px;
     left: -22px;
+  }
 
-    >.btn:first-child {
-      top: 1px;
+  .spinner-up {
+    top: 2px;
 
-      i{
-        position:relative;
-        top: -2px;
-      }
+    i{
+      position:relative;
+      top: 0;
     }
+  }
 
-    >.btn:last-child {
-      i {
-        position:relative;
-        top: 0;
-      }
+  .spinner-down {
+    i {
+      position:relative;
+      top: 0;
     }
   }
 }

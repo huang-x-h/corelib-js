@@ -12,23 +12,30 @@
 			<div class="panel panel-default">
 			  <div class="panel-heading">NumericStepper Example</div>
 			  <div class="panel-body">
-			  	<div class="input-group">
+			  	<div id="stepper" data-pulgin="numericstepper" class="numericstepper">
 					  <input type="text" class="form-control">
-					  <div class="input-group-addon numericstepper">
-					  	<button type="button" class="btn btn-default glyphicon glyphicon-chevron-up"></button>
-					  	<button type="button" class="btn btn-default glyphicon glyphicon-chevron-down"></button>
+					  <div class="numericstepper-buttons btn-group-vertical">
+					  	<button type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-up"></i></button>
+					  	<button type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-down"></i></button>
 					  </div>
 					</div>
 			  </div>
+        <div class="panel-footer"><a href="index.html" class="btn btn-primary">Back</a></div>
 			</div>
 		</div>
 		<script type="text/javascript" src="../libs/underscore.js"></script>
+    <script type="text/javascript" src="../libs/jquery.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/base.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/components/numericstepper.js"></script>
 		<script type="text/javascript">
-			var stepper = new ztesoft.components.NumericStepper(document.getElementsByClassName('input-group')[0]);
-			stepper.render();
+      var stepper = new ztesoft.components.NumericStepper(document.getElementById('stepper'));
+      stepper.render();
+//      $('[data-plugin="numericstepper"]').each(function() {
+//        var stepper = new ztesoft.components.NumericStepper(this);
+//        stepper.render();
+//      });
+
 		</script>
 	</body>
 </html>

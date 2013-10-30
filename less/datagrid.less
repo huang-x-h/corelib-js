@@ -2,19 +2,22 @@
 }
 
 .datagrid-header {
-  >thead {
-    background-color: @table-bg-hover;
-    border-bottom: 0;
+  > table {
+    margin-bottom: 0;
+
+    > thead {
+      background-color: @table-bg-hover;
+      border-bottom: 0;
+    }
   }
-  margin-bottom: 0;
 }
 
 .datagrid-body {
   border: 1px solid @table-border-color;
   border-top: 0;
-  overflow: auto;
+  overflow-y: auto;
 
-  >table {
+  > table {
     margin-bottom: 0;
   }
 }

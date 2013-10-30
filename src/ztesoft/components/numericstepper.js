@@ -1,22 +1,24 @@
-(function() {
+(function($, undefined) {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var NumericStepper = ns.NumericStepper = function(element, options) {
 		this._value = 0;
-		this.element = element;
-		this.textfield = element.querySelector('input');
-		this.upButton = element.querySelector('.glyphicon-chevron-up');
-		this.downButton = element.querySelector('.glyphicon-chevron-down');
+		this.$element = $(element);
 
-		_.extend(this, NumericStepper.DEFAULTS, options);
+		$.extend(this, NumericStepper.DEFAULTS, options);
 	};
 
-	_.extend(NumericStepper.prototype, ztesoft.events.Event);
+	$.extend(NumericStepper.prototype, ztesoft.events.Event);
 
 	NumericStepper.prototype.render = function() {
-		this.textfield.addEventListener('blur', _.bind(this._textFeildBlurHandler, this));
-		this.upButton.addEventListener('click', _.bind(this._upButtonClickHandler, this));
-		this.downButton.addEventListener('click', _.bind(this._downButtonClickHandler, this));
+    this.$textfield = this.$element.find('input');
+    this.$textfield.on('blur', $.proxy(this._textFeildBlurHandler, this));
+
+    this.$upbutton = this.$element.find('.glyphicon-chevron-up').parent();
+    this.$upbutton.on('click', $.proxy(this._upButtonClickHandler, this));
+
+    this.$downbutton = this.$element.find('.glyphicon-chevron-down').parent();
+    this.$downbutton.on('click', $.proxy(this._downButtonClickHandler, this));
 	};
 
 	NumericStepper.prototype.value = function(value) {
@@ -32,7 +34,7 @@
 	}
 
 	NumericStepper.prototype._setValue = function(value) {
-		this.textfield.value = this._value = this._checkValue(value);
+		this.$textfield.val(this._value = this._checkValue(value));
 		this.trigger('change');
 	};
 
@@ -49,7 +51,7 @@
 	};
 
 	NumericStepper.prototype._textFeildBlurHandler = function(event) {
-		this._setValue(parseInt(this.textfield.value));
+		this._setValue(parseInt(this.$textfield.val()));
 	};
 
 	NumericStepper.prototype._upButtonClickHandler = function(event) {
@@ -66,4 +68,4 @@
 		maximum: 10,
 		stepSize: 1
 	};
-})();
+})(window.jQuery);

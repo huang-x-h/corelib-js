@@ -75,8 +75,8 @@
 // -------------------------
 // Based on 14px font-size and 1.428 line-height (~20px to start)
 
-@padding-base-vertical:          6px;
-@padding-base-horizontal:        12px;
+@padding-base-vertical:          3px;
+@padding-base-horizontal:        6px;
 
 @padding-large-vertical:         10px;
 @padding-large-horizontal:       16px;
@@ -100,13 +100,14 @@
 // Tables
 // -------------------------
 
-@table-cell-padding:                 8px;
+@table-cell-padding:                 6px;
 @table-condensed-cell-padding:       5px;
 
 @table-bg:                           transparent; // overall background-color
 @table-bg-accent:                    #f9f9f9; // for striping
 @table-bg-hover:                     #f5f5f5;
-@table-bg-active:                    @table-bg-hover;
+@table-bg-active:                    @component-active-bg;
+@table-color-active:                 @component-active-color;
 
 @table-border-color:                 #ddd; // table and cell border
 

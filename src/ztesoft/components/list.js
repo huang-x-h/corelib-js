@@ -2,7 +2,7 @@
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var List = ns.List = function(element, options) {
-        this.$element = $(element);
+    this.$element = $(element);
 		this._selectedItem = null;
 		this._selectedIndex = -1;
 
