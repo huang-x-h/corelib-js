@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Menu</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/components.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-heading">Menu Example</div>
+        <div class="panel-body">
+          <div id="menu" style="width: 200px;">
+          </div>
+        </div>
+        <div class="panel-footer"><a href="index.html" class="btn btn-primary">Back</a></div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../libs/underscore.js"></script>
+    <script type="text/javascript" src="../libs/jquery.js"></script>
+    <script type="text/javascript" src="../src/ztesoft/base.js"></script>
+    <script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
+    <script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
+    <script type="text/javascript" src="../src/ztesoft/components/menu.js"></script>
+    <script type="text/javascript">
+      var menu = new ztesoft.components.Menu(document.getElementById('menu'), {
+        'dataSource': [
+          {label: 'Link'},
+          {label: 'Link'},
+          {label: 'Dropdown', children: [
+            {label: 'Action'},
+            {label: 'Another action'},
+            {label: 'Something else here'},
+            {label: 'Separated link'},
+            {label: 'One more separated link', children: [
+              {label: 'Grand Child1'},
+              {label: 'Grand Child2'},
+              {label: 'Grand Child3'}]}]}],
+        'labelField': 'label'
+      });
+      menu.render();
+    </script>
+  </body>
+</html>

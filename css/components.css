@@ -1,6 +1,5 @@
-/*! corelib-js 30-10-2013 */
+/*! corelib-js 01-11-2013 */
 .list {
-  width: 100%;
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
@@ -10,6 +9,7 @@
   background-color: #ffffff;
   border: 1px solid #cccccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
 }
 
 .list > li > a {
@@ -36,6 +36,52 @@
   text-decoration: none;
   background-color: #428bca;
   outline: 0;
+}
+
+.menu {
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  list-style: none;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333333;
+  white-space: nowrap;
+}
+
+.menu > li > a:hover,
+.menu > li > a:focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #428bca;
+}
+
+.menu > .active > a,
+.menu > .active > a:hover,
+.menu > .active > a:focus {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #428bca;
+  outline: 0;
+}
+
+.combobox {
+  position: relative;
+}
+
+.combobox .popup {
+  width: 100%;
 }
 
 .numericstepper input {
@@ -67,12 +113,10 @@
 }
 
 .numericstepper .numericstepper-buttons > .btn:first-child i {
-  position: relative;
   top: -2px;
 }
 
 .numericstepper .numericstepper-buttons > .btn:last-child i {
-  position: relative;
   top: 0;
 }
 
@@ -83,6 +127,9 @@
 
 .datepicker {
   padding: 4px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
@@ -220,25 +267,10 @@
   display: block;
 }
 
-.popup-wrapper {
-  position: relative;
-}
-
 .popup {
   position: absolute;
-  top: 100%;
-  left: 0;
   z-index: 1000;
   display: none;
-  float: left;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  font-size: 14px;
-  list-style: none;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
