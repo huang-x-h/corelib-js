@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function($) {
   var ns = ztesoft.namespace('ztesoft.components');
 
   var Menu = ns.Menu = function(element, options) {
@@ -25,7 +25,7 @@
   Menu.prototype._createChildrenList = function(children) {
     var that = this;
     var html = ['<ul class="menu">'];
-    children.forEach(function(item, index) {
+    children.forEach(function(item) {
       html.push(that._createItemRenderer(item, null, ''));
     });
     html.push('</ul>');
@@ -41,7 +41,7 @@
     html.push(this.itemToLabel(item));
     if (children) {
       html.push('<i class="glyphicon glyphicon-chevron-right"></i></a><ul class="menu popup">');
-      children.forEach(function(childItem, index) {
+      children.forEach(function(childItem) {
         html.push(that._createItemRenderer(childItem));
       });
       html.push('</ul>');
