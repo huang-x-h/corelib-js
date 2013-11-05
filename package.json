@@ -31,6 +31,9 @@
     "grunt-contrib-uglify": "~0.2.4",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-recess": "~0.4.0"
+    "grunt-htmlhint": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-recess": "~0.4.0",
+    "matchdep": "*"
   }
 }

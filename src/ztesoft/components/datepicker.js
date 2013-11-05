@@ -136,13 +136,7 @@
 		var target = event.target;
 		if (target.tagName == 'TD' && target.textContent) {
 			this.date.setDate(parseInt(target.textContent));
-
-			var year = this.date.getFullYear();
-			var month = this.date.getMonth() + 1;
-			var day = this.date.getDate();
-			if (month < 10) month = '0' + month;
-			if (day < 10) day = '0' + day;
-			this.$element.find('input').val(year + '-' + month + '-' + day);
+			this.$element.find('input').val(ztesoft.utils.DateUtil.format(this.date, 'yyyy-mm-dd'));
 			this.hide();
 		}
 	};

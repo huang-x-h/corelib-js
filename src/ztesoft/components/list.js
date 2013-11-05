@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function($) {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var List = ns.List = function(element, options) {
@@ -14,7 +14,7 @@
 	List.prototype.render = function() {
 		var that = this;
 		var html = ['<ul class="list">'];
-        this.dataSource.forEach(function(item, index) {
+        this.dataSource.forEach(function(item) {
             html.push('<li><a href="#">' + that.itemToLabel(item) + '</a></li>');
         });
         html.push('</ul>');

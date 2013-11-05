@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function($) {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var Tree = ns.Tree = function(element, options) {
@@ -23,7 +23,7 @@
 	Tree.prototype._createChildrenList = function(children) {
 		var that = this;
 		var $ul = $('<ul></ul>');
-		children.forEach(function(item, index) {
+		children.forEach(function(item) {
 			$ul.append(that._createItemRenderer(item, null, ''));
 		});
 		return $ul;

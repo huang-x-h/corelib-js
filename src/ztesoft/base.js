@@ -43,24 +43,6 @@
     }
   };
 
-  ztesoft.on = function(element, eventType, handler) {
-
-  };
-
-  ztesoft.off = function(element, eventType, handler) {
-
-  };
-
-  ztesoft.inherit = function(childCtor, parentCtor) {
-    /** @constructor */
-    function tempCtor() {};
-    tempCtor.prototype = parentCtor.prototype;
-    childCtor.superClass_ = parentCtor.prototype;
-    childCtor.prototype = new tempCtor();
-    /** @override */
-    childCtor.prototype.constructor = childCtor;
-  }
-
   ztesoft.namespace = function(name) {
     var parts = name.split('.');
     var ns = window;
