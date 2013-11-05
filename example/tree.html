@@ -21,6 +21,7 @@
 			  		<button type="button" class="btn btn-default" onclick="expandAllHandler()">Expand All</button>
 			  		<button type="button" class="btn btn-default" onclick="collapseAllHandler()">Collapse All</button>
 			  		<button type="button" class="btn btn-default" onclick="addHandler()">Add</button>
+            <button type="button" class="btn btn-default" onclick="removeHandler()">Remove</button>
 			  	</div>
 			  </div>
         <div class="panel-footer"><a href="index.html" class="btn btn-primary">Back</a></div>
@@ -44,6 +45,9 @@
 				'labelField': 'label'
 			});
 			tree.render();
+      tree.on('itemClick', function(data) {
+        console.log(data);
+      })
 
 			function expandHandler() {
 				tree.expandNode(tree.getSelectedNode());
@@ -54,8 +58,14 @@
 			}
 
 			function addHandler() {
-				
+				var node = tree.getSelectedNode();
+        tree.append({label: 'Add Item'}, node);
 			}
+
+      function removeHandler() {
+        var node = tree.getSelectedNode();
+        tree.remove(node);
+      }
 
 			function collapseHandler() {
 				tree.collapseNode(tree.getSelectedNode());
@@ -64,18 +74,6 @@
 			function collapseAllHandler() {
 				
 			}
-
-
-			// var obj = {};
-			// var _index = 1;
-			// Object.defineProperty(obj, 'index', {
-			// 	get: function(){return _index},
-			// 	set: function(index){_index = index}
-			// });
-
-			// console.log(obj.index);
-			// obj.index++;
-			// console.log(obj.index);
 		</script>
 	</body>
 </html>

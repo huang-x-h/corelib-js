@@ -35,8 +35,8 @@
 			});
 			list.render();
 			
-			list.on('itemClick', function(){
-				console.log(list.selectedItem());
+			list.on('itemClick', function(item){
+				console.log(item);
 			});
 
 			function addHandler() {

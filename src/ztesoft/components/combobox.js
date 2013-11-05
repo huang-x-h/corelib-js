@@ -1,23 +1,23 @@
-(function($, undefined) {
+(function($) {
 	var ns = ztesoft.namespace("ztesoft.components");
 
 	var ComboBox = ns.ComboBox = function(element, options) {
-		this.element = element;
-		this.textField = this.element.querySelector('input');
-		this.addOn = this.element.querySelector('.input-group-addon');
-		_.extend(this, ComboBox.DEFAULTS, options);
-		this.addOn.addEventListener('click', _.bind(this.show, this));
+		this.$element = $(element);
+		this.textField = this.$element.find('input');
+		this.addOn = this.$element.find('.input-group-addon');
+		$.extend(this, ComboBox.DEFAULTS, options);
+		this.addOn.on('click', $.proxy(this.show, this));
 	};
 
-	_.extend(ComboBox.prototype, ztesoft.events.Event);
+  $.extend(ComboBox.prototype, ztesoft.events.Event);
 
 	ComboBox.DEFAULTS = {
 		'labelField': null,
 		'labelFunction': null
-	}
+	};
 
 	ComboBox.prototype.render = function() {
-		this.list = new ns.List(this.element, {
+		this.list = new ns.List(this.$element[0], {
 			'labelField': this.labelField,
 			'labelFunction': this.labelFunction,
 			'dataSource': this.dataSource
@@ -47,14 +47,14 @@
 		this.list._setSelectedIndex(index);
 		this._selectedIndex = this.list.selectedIndex();
 		this._selectedItem = this.list.selectedItem();
-		this.textField.value = this.list.itemToLabel(this._selectedItem);
-		this.trigger('change');
+		this.textField.val(this.list.itemToLabel(this._selectedItem));
+		this.trigger('change', this._selectedItem);
 	};
 
 	ComboBox.prototype._itemClickHandler = function() {
 		this._selectedIndex = this.list.selectedIndex();
 		this._selectedItem = this.list.selectedItem();
-		this.textField.value = this.list.itemToLabel(this._selectedItem);
+		this.textField.val(this.list.itemToLabel(this._selectedItem));
 		this.hide();
 	};
 
@@ -67,11 +67,11 @@
 	};
 
 	ComboBox.prototype.show = function() {
-		ztesoft.addClass(this.element, 'open');
+		this.$element.addClass('open');
 	};
 
 	ComboBox.prototype.hide = function() {
-		ztesoft.removeClass(this.element, 'open');
+    this.$element.removeClass('open');
 	};
 
 	ComboBox.prototype.destory = function() {

@@ -1,4 +1,4 @@
-(function($, undefined) {
+(function($) {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var DatePicker = ns.DatePicker = function(element, options) {

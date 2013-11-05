@@ -16,77 +16,27 @@
 	};
 
 	Tree.prototype.render = function() {
-		this.$element.append(this._createChildrenList(this.dataSource));
+    var that = this;
+    var $ul = $('<ul></ul>');
+    var node, nodes = [];
+    if (this.dataSource) {
+      this.dataSource.forEach(function(item) {
+        node = new TreeNode(item);
+        nodes.push(node);
+      })
+    }
+
+    nodes.forEach(function(node) {
+      that._createNode(node);
+      $ul.append(node.element);
+    });
+
+    this.$element.append($ul);
 		this.$element.on('click', $.proxy(this._clickHandler, this));
 	};
 
-	Tree.prototype._createChildrenList = function(children) {
-		var that = this;
-		var $ul = $('<ul></ul>');
-		children.forEach(function(item) {
-			$ul.append(that._createItemRenderer(item, null, ''));
-		});
-		return $ul;
-	};
-
-	Tree.prototype._createItemRenderer = function(item, parentNode, indentationHtml) {
-		var that = this;
-		var children = item[this.childrenField];
-		var node = new TreeNode(item, parentNode);
-		var $li, $ul;
-
-		if (children) {
-			$li = $('<li><a href="#"><span>' + 
-				indentationHtml +
-				'<i class="glyphicon glyphicon-plus-sign js-folder"></i>' + 
-				that.itemToLabel(item) + 
-				'</span></a><ul class="children-list"></ul></li>');
-			$ul = $li.children('ul');
-			indentationHtml += '<i class="glyphicon tree-indentation"></i>';
-			children.forEach(function(childItem, index) {
-				$ul.append(that._createItemRenderer(childItem, node, indentationHtml))
-			});
-		}
-		else {
-			$li = $('<li><a href="#"><span>' +
-				indentationHtml +
-				'<i class="glyphicon tree-indentation"></i>' + that.itemToLabel(item) + '</span></a></li>')
-		}
-		node.element = $li;
-		$li.data('node', node);
-
-		return $li;
-	};
-
-	Tree.prototype._clickHandler = function(event) {
-		var $target = $(event.target);
-		var $li = $target.closest('li');
-
-		if ($target.is('i')) {
-			if ($li.hasClass('open')) {
-				this.trigger('itemClose');
-				$li.removeClass('open');
-				$target.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
-			}
-			else {
-				this.trigger('itemOpen');
-				$li.addClass('open');
-				$target.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
-			}
-		}
-		else {
-			event.preventDefault();
-			if (!$li.hasClass('active')) {
-				var $active = this.$element.find('.active');
-				$active.removeClass('active');
-				$li.addClass('active');
-				this.trigger('itemClick');
-			}
-		}
-	};
-
-	Tree.prototype.expandNode = function(node) {
-		if (!node.childrenNode)
+  Tree.prototype.expandNode = function(node) {
+		if (!node.hasChildren())
 			return;
 
 		var $li = node.element;
@@ -99,7 +49,7 @@
 	};
 
 	Tree.prototype.collapseNode = function(node) {
-		if (!node.childrenNode)
+		if (!node.hasChildren())
 			return;
 
 		var $li = node.element;
@@ -112,21 +62,31 @@
 	};
 
 	Tree.prototype.expandAll = function() {
-
 	};
 
 	Tree.prototype.collapseAll = function() {
 
 	};
 
-	Tree.prototype.append = function(item) {
+	Tree.prototype.append = function(item, parentNode) {
+    var node = new TreeNode(item);
+    parentNode.addChild(node);
 
-		// var $li = this._createItemRenderer(item, parentNode,)
+    var $ul = parentNode.element.children('ul');
+    this._createNode(node);
+    var $li = node.element;
+    $ul.append($li);
 	};
 
-	Tree.prototype.update = function() {
-		var $li = this.getSelectedNode().element;
-		// $li.find()
+  Tree.prototype.remove = function(node) {
+    node.element.remove();
+    node.destory();
+  };
+
+	Tree.prototype.update = function(node, data) {
+		var $li = node.element;
+    node.data = data;
+
 	};
 
 	Tree.prototype.getSelectedNode = function() {
@@ -139,19 +99,160 @@
 		return node.data;
 	};
 
-	var TreeNode = function(data, parentNode, element) {
+  Tree.prototype._createNode = function(node) {
+    if (node.hasChildren()) {
+      this._createFolder(node);
+    }
+    else {
+      this._createLeaf(node);
+    };
+  };
+
+  Tree.prototype._createLeaf = function(node) {
+    var html = ['<li><a href="#"><span>'];
+    html.push(this._createIndentationHtml(node.getLevel()));
+    html.push(this.itemToLabel(node.data));
+    html.push('</span></a></li>');
+
+    var $li = $(html.join(''));
+    $li.data('node', node);
+    node.element = $li;
+    return $li;
+  };
+
+  Tree.prototype._createFolder = function(node) {
+    var that = this;
+    var html = ['<li><a href="#"><span>'];
+    html.push(this._createIndentationHtml(node.getLevel() - 1));
+    html.push('<i class="glyphicon glyphicon-plus-sign js-folder"></i>');
+    html.push(this.itemToLabel(node.data));
+    html.push('</span></a></li>');
+
+    var $li = $(html.join(''));
+    var $ul = $('<ul class="children-list"></ul>');
+    node.children.forEach(function(childNode) {
+      that._createNode(childNode);
+      $ul.append(childNode.element);
+    });
+    $li.append($ul);
+    $li.data('node', node);
+    node.element = $li;
+    return $li;
+  };
+
+  Tree.prototype._createIndentationHtml = function(count) {
+    var html = [];
+    for (var i = 0; i < count; i++) {
+      html.push('<i class="glyphicon tree-indentation"></i>');
+    }
+    return html.join('');
+  };
+
+  Tree.prototype._clickHandler = function(event) {
+    var $target = $(event.target);
+    var $li = $target.closest('li');
+
+    if ($target.is('i')) {
+      event.preventDefault();
+      if ($li.hasClass('open')) {
+        this.trigger('itemClose');
+        $li.removeClass('open');
+        $target.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
+      }
+      else {
+        this.trigger('itemOpen');
+        $li.addClass('open');
+        $target.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
+      }
+    }
+    else {
+      event.preventDefault();
+      if (!$li.hasClass('active')) {
+        var $active = this.$element.find('.active');
+        $active.removeClass('active');
+        $li.addClass('active');
+        this.trigger('itemClick', $li.data('node').data);
+      }
+    }
+  };
+
+  Tree.prototype._setSelected = function($li) {
+
+  }
+
+  var TreeNode = function(data) {
 		this.data = data;
-		this.parentNode = parentNode;
-		this.element = element;
-		this.init();
+    this.parent = null;
+    this.children = [];
+    this.init();
 	};
 
-	TreeNode.prototype.init = function() {
-		if (this.parentNode) {
-			var childrenNode = this.parentNode.childrenNode || [];
-			childrenNode.push(this);
-			this.parentNode.childrenNode = childrenNode;
-		}
-	};
+  TreeNode.prototype.init = function() {
+    var node, children = this.data.children, that = this;
+    if (children) {
+      children.forEach(function(item) {
+        node = new TreeNode(item);
+        that.addChild(node);
+      });
+    }
+  };
+
+  TreeNode.prototype.destory = function() {
+    this.parent = null;
+  };
+
+  TreeNode.prototype.addChild = function(node) {
+    node.parent = this;
+    this.children.push(node);
+  };
+
+  TreeNode.prototype.removeChild = function(node) {
+    node.parent = null;
+    this.children.splice(this.getChildIndex(node), 1);
+  };
+
+  TreeNode.prototype.getChildIndex = function(node) {
+    return this.children.indexOf(node);
+  };
+
+  TreeNode.prototype.hasChildren = function() {
+    return this.children.length !== 0;
+  };
+
+  TreeNode.prototype.getPreviousSibling = function() {
+    var previousIndex;
+    if (!this.parent) {
+      return null;
+    }
+
+    previousIndex = this.parent.getChildIndex(this) - 1;
+    if (previousIndex >= 0) {
+      return this.parent.children[previousIndex];
+    }
+    return null;
+  };
+
+  TreeNode.prototype.getNextSibling = function() {
+    var nextIndex;
+    if (!this.parent) {
+      return null;
+    }
+
+    nextIndex = this.parent.getChildIndex(this) + 1;
+    if (nextIndex < this.parent.children.length) {
+      return this.parent.children[nextIndex];
+    }
+    return null;
+  }
+
+  TreeNode.prototype.getLevel = function() {
+    var level = 1;
+    var parent = this.parent;
+    while(parent) {
+      level++;
+      parent = parent.parent;
+    }
+    return level;
+  };
 
 })(window.jQuery);

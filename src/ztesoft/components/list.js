@@ -93,7 +93,7 @@
 		$li.eq(index).addClass('active');
 		this._selectedIndex = index;
 		this._selectedItem = this.dataSource[index];
-		this.trigger('change');
+		this.trigger('change', this._selectedItem);
 	};
 
 	List.prototype._clickHandler = function(event) {
@@ -101,7 +101,7 @@
 		if (event.target.tagName === 'A') {
 			var index = this.$ul.children().index(event.target.parentElement);
 			this.selectedIndex(index);
-			this.trigger('itemClick');
+			this.trigger('itemClick', this._selectedItem);
 		}
 	};
 
