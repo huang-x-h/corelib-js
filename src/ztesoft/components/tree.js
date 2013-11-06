@@ -255,4 +255,4 @@
     return level;
   };
 
-})(window.jQuery);
+})(jQuery);

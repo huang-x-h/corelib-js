@@ -78,4 +78,4 @@
 		this.list.remove();
 	};
 
-})(window.jQuery);
+})(jQuery);

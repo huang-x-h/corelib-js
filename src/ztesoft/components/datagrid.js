@@ -108,4 +108,4 @@
       this.trigger('itemClick');
 		}
 	}
-})(window.jQuery);
+})(jQuery);

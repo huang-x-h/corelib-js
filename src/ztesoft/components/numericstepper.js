@@ -68,4 +68,4 @@
 		maximum: 10,
 		stepSize: 1
 	};
-})(window.jQuery);
+})(jQuery);

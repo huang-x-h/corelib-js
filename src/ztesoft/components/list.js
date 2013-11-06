@@ -111,4 +111,4 @@
 		labelFunction:null,
 		dataKeyField:null
 	};
-})(window.jQuery);
+})(jQuery);

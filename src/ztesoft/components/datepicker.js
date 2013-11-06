@@ -158,4 +158,4 @@
 	DatePicker.prototype.destory = function() {
 		this._picker.remove();
 	};
-})(window.jQuery);
+})(jQuery);
