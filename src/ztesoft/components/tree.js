@@ -12,21 +12,16 @@
 	Tree.DEFAULTS = {
 		'labelField': null,
 		'labelFunction': null,
-		'childrenField': 'children'
+		'childrenField': 'children',
+    'autoOpen': true
 	};
 
 	Tree.prototype.render = function() {
     var that = this;
-    var $ul = $('<ul></ul>');
-    var node, nodes = [];
-    if (this.dataSource) {
-      this.dataSource.forEach(function(item) {
-        node = new TreeNode(item);
-        nodes.push(node);
-      })
-    }
+    var $ul = $('<ul class="tree"></ul>');
+    this._loadFromDataSource();
 
-    nodes.forEach(function(node) {
+    this.nodes.forEach(function(node) {
       that._createNode(node);
       $ul.append(node.element);
     });
@@ -35,13 +30,43 @@
 		this.$element.on('click', $.proxy(this._clickHandler, this));
 	};
 
+  Tree.prototype._loadFromDataSource = function() {
+    var node, children, nodes = [], that = this;
+    if (this.dataSource) {
+      this.dataSource.forEach(function(item) {
+        node = new TreeNode(item);
+        children = item[that.childrenField];
+        if (children) {
+          node.isOpen = that.autoOpen;
+          that._loadFromArray(children, node);
+        }
+        nodes.push(node);
+      })
+    }
+    this.nodes = nodes;
+  };
+
+  Tree.prototype._loadFromArray = function(array, parentNode) {
+    var node, children, that = this;
+    array.forEach(function(item) {
+      node = new TreeNode(item);
+      parentNode.addChild(node);
+      children = item[that.childrenField];
+      if (children) {
+        node.isOpen = that.autoOpen;
+        that._loadFromArray(children, node)
+      }
+    });
+  };
+
   Tree.prototype.expandNode = function(node) {
-		if (!node.hasChildren())
+		if (!node.isBranch())
 			return;
 
 		var $li = node.element;
 		var $disclosureIcon = $li.children('a').find('.js-folder');
-		if (!$li.hasClass('open')) {
+		if (!node.isOpen) {
+      node.isOpen = true;
 			this.trigger('itemOpen');
 			$li.addClass('open');
 			$disclosureIcon.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
@@ -49,12 +74,13 @@
 	};
 
 	Tree.prototype.collapseNode = function(node) {
-		if (!node.hasChildren())
+		if (!node.isBranch())
 			return;
 
 		var $li = node.element;
 		var $disclosureIcon = $li.children('a').find('.js-folder');
-		if ($li.hasClass('open')) {
+		if (node.isOpen) {
+      node.isOpen = false;
 			this.trigger('itemClose');
 			$li.removeClass('open');
 			$disclosureIcon.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
@@ -62,31 +88,60 @@
 	};
 
 	Tree.prototype.expandAll = function() {
+    var that = this;
+    this.nodes.forEach(function(node) {
+      that.expandNode(node);
+    });
 	};
 
 	Tree.prototype.collapseAll = function() {
-
+    var that = this;
+    this.nodes.forEach(function(node) {
+      that.collapseNode(node);
+    });
 	};
 
 	Tree.prototype.append = function(item, parentNode) {
-    var node = new TreeNode(item);
-    parentNode.addChild(node);
+    var $ul, $li, $prev, index, node = new TreeNode(item);
 
-    var $ul = parentNode.element.children('ul');
-    this._createNode(node);
-    var $li = node.element;
-    $ul.append($li);
+    if (parentNode.isBranch()) {
+      parentNode.addChild(node);
+      $ul = parentNode.element.children('ul');
+      this._createNode(node);
+      $li = node.element;
+      $ul.append($li);
+    }
+    else {
+      parentNode.addChild(node);
+      $li = parentNode.element;
+      $prev = $li.prev();
+      $ul = $li.parent();
+
+      parentNode.element = null;
+      $li.remove();
+      $li = this._createFolder(parentNode);
+
+      if ($prev.length) {
+        $prev.after($li);
+      }
+      else {
+        $ul.append($li);
+      }
+    }
+    this.expandNode(parentNode);
+    this._setSelectedNode(node);
 	};
 
   Tree.prototype.remove = function(node) {
+    var parentNode = node.parent;
     node.element.remove();
-    node.destory();
+    node.destroy();
+    this._setSelectedNode(parentNode);
   };
 
-	Tree.prototype.update = function(node, data) {
+	Tree.prototype.update = function(node) {
 		var $li = node.element;
-    node.data = data;
-
+    $li.children('a').html(this._createLabel(node));
 	};
 
 	Tree.prototype.getSelectedNode = function() {
@@ -99,13 +154,22 @@
 		return node.data;
 	};
 
+  Tree.prototype._setSelectedNode = function(node) {
+    var $active = this.$element.find('.active');
+    $active.removeClass('active');
+
+    var $li = node.element;
+    $li.addClass('active');
+    this.trigger('change', node.data);
+  };
+
   Tree.prototype._createNode = function(node) {
-    if (node.hasChildren()) {
+    if (node.isBranch()) {
       this._createFolder(node);
     }
     else {
       this._createLeaf(node);
-    };
+    }
   };
 
   Tree.prototype._createLeaf = function(node) {
@@ -122,9 +186,17 @@
 
   Tree.prototype._createFolder = function(node) {
     var that = this;
-    var html = ['<li><a href="#"><span>'];
-    html.push(this._createIndentationHtml(node.getLevel() - 1));
-    html.push('<i class="glyphicon glyphicon-plus-sign js-folder"></i>');
+    var html = [];
+    if (node.isOpen) {
+      html.push('<li class="open"><a href="#"><span>');
+      html.push(this._createIndentationHtml(node.getLevel() - 1));
+      html.push('<i class="glyphicon glyphicon-minus-sign js-folder"></i>');
+    }
+    else {
+      html.push('<li><a href="#"><span>');
+      html.push(this._createIndentationHtml(node.getLevel() - 1));
+      html.push('<i class="glyphicon glyphicon-plus-sign js-folder"></i>');
+    }
     html.push(this.itemToLabel(node.data));
     html.push('</span></a></li>');
 
@@ -140,6 +212,23 @@
     return $li;
   };
 
+  Tree.prototype._createLabel = function(node) {
+    var html = ['<span>'];
+    var level = node.getLevel();
+    if (node.isBranch()) {
+      html.push(this._createIndentationHtml(level - 1));
+      html.push('<i class="glyphicon ',
+          node.isOpen ? 'glyphicon-minus-sign' : 'glyphicon-plus-sign',
+          ' js-folder"></i>');
+    }
+    else {
+      html.push(this._createIndentationHtml(level));
+    }
+    html.push(this.itemToLabel(node.data));
+    html.push('</span>');
+    return html.join('');
+  };
+
   Tree.prototype._createIndentationHtml = function(count) {
     var html = [];
     for (var i = 0; i < count; i++) {
@@ -151,58 +240,41 @@
   Tree.prototype._clickHandler = function(event) {
     var $target = $(event.target);
     var $li = $target.closest('li');
+    var node = $li.data('node');
 
     if ($target.is('i')) {
       event.preventDefault();
-      if ($li.hasClass('open')) {
-        this.trigger('itemClose');
-        $li.removeClass('open');
-        $target.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
+      if (node.isOpen) {
+        this.collapseNode(node);
       }
       else {
-        this.trigger('itemOpen');
-        $li.addClass('open');
-        $target.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
+        this.expandNode(node);
       }
     }
     else {
       event.preventDefault();
       if (!$li.hasClass('active')) {
-        var $active = this.$element.find('.active');
-        $active.removeClass('active');
-        $li.addClass('active');
-        this.trigger('itemClick', $li.data('node').data);
+        this._setSelectedNode(node);
+        this.trigger('itemClick', node.data);
       }
     }
   };
 
-  Tree.prototype._setSelected = function($li) {
-
-  }
-
   var TreeNode = function(data) {
 		this.data = data;
     this.parent = null;
-    this.children = [];
-    this.init();
 	};
 
-  TreeNode.prototype.init = function() {
-    var node, children = this.data.children, that = this;
-    if (children) {
-      children.forEach(function(item) {
-        node = new TreeNode(item);
-        that.addChild(node);
-      });
-    }
-  };
-
-  TreeNode.prototype.destory = function() {
+  TreeNode.prototype.destroy = function() {
     this.parent = null;
   };
 
   TreeNode.prototype.addChild = function(node) {
     node.parent = this;
+
+    if (!this.children) {
+      this.children = [];
+    }
     this.children.push(node);
   };
 
@@ -217,6 +289,10 @@
 
   TreeNode.prototype.hasChildren = function() {
     return this.children.length !== 0;
+  };
+
+  TreeNode.prototype.isBranch = function() {
+    return !!this.children;
   };
 
   TreeNode.prototype.getPreviousSibling = function() {
@@ -243,7 +319,7 @@
       return this.parent.children[nextIndex];
     }
     return null;
-  }
+  };
 
   TreeNode.prototype.getLevel = function() {
     var level = 1;

@@ -1,6 +1,6 @@
 .menu {
   min-width: 160px;
-  padding: 5px 0;
+  padding: @padding-base-vertical 0;
   margin: 2px 0 0;
   list-style: none;
   font-size: @font-size-base;
@@ -9,35 +9,5 @@
   border: 1px solid @dropdown-border;
   border-radius: @border-radius-base;
 
-  > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: @line-height-base;
-    color: @dropdown-link-color;
-    white-space: nowrap;
-  }
-}
-
-// Hover/Focus state
-.menu > li > a{
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: @dropdown-link-active-color;
-    background-color: @dropdown-link-active-bg;
-  }
-}
-
-// Active state
-.menu > .active > a {
-  &,
-  &:hover,
-  &:focus {
-    color: @dropdown-link-active-color;
-    text-decoration: none;
-    outline: 0;
-    background-color: @dropdown-link-active-bg;
-  }
+  .list-item();
 }

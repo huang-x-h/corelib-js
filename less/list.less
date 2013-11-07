@@ -1,7 +1,7 @@
 .list {
 	min-width: 160px;
   height: 100%;
-  padding: 5px 0;
+  padding: @padding-base-vertical 0;
   margin: 2px 0 0;
   overflow-y: auto;
   list-style: none;
@@ -11,35 +11,5 @@
   border: 1px solid @dropdown-border;
   border-radius: @border-radius-base;
 
-	> li > a {
-		display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: @line-height-base;
-    color: @dropdown-link-color;
-    white-space: nowrap;
-	}
-}
-
-// Hover/Focus state
-.list > li > a{
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: @dropdown-link-hover-color;
-    background-color: @dropdown-link-hover-bg;
-  }
-}
-
-// Active state
-.list > .active > a {
-  &,
-  &:hover,
-  &:focus {
-    color: @dropdown-link-active-color;
-    text-decoration: none;
-    outline: 0;
-    background-color: @dropdown-link-active-bg;
-  }
+  .list-item();
 }
