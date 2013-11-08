@@ -51,7 +51,12 @@
       })
 
 			function expandHandler() {
-				tree.expandNode(tree.getSelectedNode());
+        var node = tree.getSelectedNode();
+        if (!node) {
+          alert("choose node to expand");
+          return;
+        }
+				tree.expandNode(node);
 			}
 
 			function expandAllHandler() {
@@ -60,6 +65,10 @@
 
 			function addHandler() {
 				var node = tree.getSelectedNode();
+        if (!node) {
+          alert("choose node to add");
+          return;
+        }
         tree.append({label: 'Add Item'}, node);
 			}
 
@@ -70,6 +79,10 @@
 
       function updateHandler() {
         var node = tree.getSelectedNode();
+        if (!node) {
+          alert("choose node to update");
+          return;
+        }
         var data = node.data;
         data.label = "Update Item";
 
@@ -77,7 +90,12 @@
       }
 
 			function collapseHandler() {
-				tree.collapseNode(tree.getSelectedNode());
+        var node = tree.getSelectedNode();
+        if (!node) {
+          alert("choose node to collapse");
+          return;
+        }
+				tree.collapseNode(node);
 			}
 
 			function collapseAllHandler() {

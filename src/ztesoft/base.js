@@ -6,7 +6,7 @@
 
   var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
-  ztesoft.trim = nativeTrim ? 
+  ztesoft.trim = nativeTrim ?
     function(text) {
       return text == null ? "" : nativeTrim.call(text);
     } :

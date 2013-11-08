@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 	var ns = ztesoft.namespace('ztesoft.components');
 
 	var ViewStack = ns.ViewStack = function(element, options) {
@@ -13,7 +13,7 @@
 		}
 	};
 
-	_.extend(ViewStack.prototype, ztesoft.events.Event);
+	$.extend(ViewStack.prototype, ztesoft.events.Event);
 
 	ViewStack.prototype.selectedIndex = function(index) {
 		if (arguments.length === 0) {
@@ -53,4 +53,4 @@
 		this.trigger('change');
 	};
 
-})();
+})(jQuery);

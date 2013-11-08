@@ -24,7 +24,7 @@
 		});
 		this.list.render();
     this.list.$ul.addClass('popup');
-		this.list.on('itemClick', _.bind(this._itemClickHandler, this));
+		this.list.on('itemClick', $.proxy(this._itemClickHandler, this));
 	};
 
 	ComboBox.prototype.selectedIndex = function(index) {
@@ -58,14 +58,6 @@
 		this.hide();
 	};
 
-	ComboBox.prototype.enable = function() {
-
-	};
-
-	ComboBox.prototype.disable = function() {
-
-	};
-
 	ComboBox.prototype.show = function() {
 		this.$element.addClass('open');
 	};
@@ -74,7 +66,7 @@
     this.$element.removeClass('open');
 	};
 
-	ComboBox.prototype.destory = function() {
+	ComboBox.prototype.destroy = function() {
 		this.list.remove();
 	};
 

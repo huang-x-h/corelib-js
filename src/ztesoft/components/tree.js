@@ -1,22 +1,21 @@
 (function($) {
-	var ns = ztesoft.namespace('ztesoft.components');
+  var ns = ztesoft.namespace('ztesoft.components');
 
-	var Tree = ns.Tree = function(element, options) {
-		this.$element = $(element);
+  var Tree = ns.Tree = function(element, options) {
+    this.$element = $(element);
+    $.extend(this, Tree.DEFAULTS, options);
+  };
 
-		$.extend(this, Tree.DEFAULTS, options);
-	};
+  $.extend(Tree.prototype, ztesoft.events.Event, ns.List.prototype);
 
-	$.extend(Tree.prototype, ztesoft.events.Event, ns.List.prototype);
-
-	Tree.DEFAULTS = {
-		'labelField': null,
-		'labelFunction': null,
-		'childrenField': 'children',
+  Tree.DEFAULTS = {
+    'labelField': null,
+    'labelFunction': null,
+    'childrenField': 'children',
     'autoOpen': true
-	};
+  };
 
-	Tree.prototype.render = function() {
+  Tree.prototype.render = function() {
     var that = this;
     var $ul = $('<ul class="tree"></ul>');
     this._loadFromDataSource();
@@ -27,8 +26,8 @@
     });
 
     this.$element.append($ul);
-		this.$element.on('click', $.proxy(this._clickHandler, this));
-	};
+    this.$element.on('click', $.proxy(this._clickHandler, this));
+  };
 
   Tree.prototype._loadFromDataSource = function() {
     var node, children, nodes = [], that = this;
@@ -41,7 +40,7 @@
           that._loadFromArray(children, node);
         }
         nodes.push(node);
-      })
+      });
     }
     this.nodes = nodes;
   };
@@ -54,55 +53,57 @@
       children = item[that.childrenField];
       if (children) {
         node.isOpen = that.autoOpen;
-        that._loadFromArray(children, node)
+        that._loadFromArray(children, node);
       }
     });
   };
 
   Tree.prototype.expandNode = function(node) {
-		if (!node.isBranch())
-			return;
+    if (!node.isBranch()){
+      return;
+    }
 
-		var $li = node.element;
-		var $disclosureIcon = $li.children('a').find('.js-folder');
-		if (!node.isOpen) {
+    var $li = node.element;
+    var $disclosureIcon = $li.children('a').find('.js-folder');
+    if (!node.isOpen) {
       node.isOpen = true;
-			this.trigger('itemOpen');
-			$li.addClass('open');
-			$disclosureIcon.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
-		}
-	};
+      this.trigger('itemOpen');
+      $li.addClass('open');
+      $disclosureIcon.removeClass('glyphicon-plus-sign').addClass('glyphicon-minus-sign');
+    }
+  };
 
-	Tree.prototype.collapseNode = function(node) {
-		if (!node.isBranch())
-			return;
+  Tree.prototype.collapseNode = function(node) {
+    if (!node.isBranch()){
+      return;
+    }
 
-		var $li = node.element;
-		var $disclosureIcon = $li.children('a').find('.js-folder');
-		if (node.isOpen) {
+    var $li = node.element;
+    var $disclosureIcon = $li.children('a').find('.js-folder');
+    if (node.isOpen) {
       node.isOpen = false;
-			this.trigger('itemClose');
-			$li.removeClass('open');
-			$disclosureIcon.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
-		}
-	};
+      this.trigger('itemClose');
+      $li.removeClass('open');
+      $disclosureIcon.removeClass('glyphicon-minus-sign').addClass('glyphicon-plus-sign');
+    }
+  };
 
-	Tree.prototype.expandAll = function() {
+  Tree.prototype.expandAll = function() {
     var that = this;
     this.nodes.forEach(function(node) {
       that.expandNode(node);
     });
-	};
+  };
 
-	Tree.prototype.collapseAll = function() {
+  Tree.prototype.collapseAll = function() {
     var that = this;
     this.nodes.forEach(function(node) {
       that.collapseNode(node);
     });
-	};
+  };
 
-	Tree.prototype.append = function(item, parentNode) {
-    var $ul, $li, $prev, index, node = new TreeNode(item);
+  Tree.prototype.append = function(item, parentNode) {
+    var $ul, $li, $prev, node = new TreeNode(item);
 
     if (parentNode.isBranch()) {
       parentNode.addChild(node);
@@ -130,7 +131,7 @@
     }
     this.expandNode(parentNode);
     this._setSelectedNode(node);
-	};
+  };
 
   Tree.prototype.remove = function(node) {
     var parentNode = node.parent;
@@ -139,20 +140,20 @@
     this._setSelectedNode(parentNode);
   };
 
-	Tree.prototype.update = function(node) {
-		var $li = node.element;
+  Tree.prototype.update = function(node) {
+    var $li = node.element;
     $li.children('a').html(this._createLabel(node));
-	};
+  };
 
-	Tree.prototype.getSelectedNode = function() {
-		var $li = this.$element.find('.active');
-		return $li.data('node');
-	};
+  Tree.prototype.getSelectedNode = function() {
+    var $li = this.$element.find('.active');
+    return $li.data('node');
+  };
 
-	Tree.prototype.getSelectedItem = function() {
-		var node = this.getSelectedNode();
-		return node.data;
-	};
+  Tree.prototype.getSelectedItem = function() {
+    var node = this.getSelectedNode();
+    return node.data;
+  };
 
   Tree.prototype._setSelectedNode = function(node) {
     var $active = this.$element.find('.active');
@@ -261,9 +262,9 @@
   };
 
   var TreeNode = function(data) {
-		this.data = data;
+    this.data = data;
     this.parent = null;
-	};
+  };
 
   TreeNode.prototype.destroy = function() {
     this.parent = null;

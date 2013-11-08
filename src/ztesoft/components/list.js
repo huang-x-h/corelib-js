@@ -56,7 +56,7 @@
 			return this._selectedItem;
 		}
 
-		this.selectedIndex(this.dataSource.indexOf(value))
+		this.selectedIndex(this.dataSource.indexOf(value));
 	};
 
 	List.prototype.append = function(item) {
@@ -79,11 +79,11 @@
 
 	List.prototype.update = function(item) {
 		var index = this.dataSource.indexOf(item);
-		var li = this.element.children[index];
-		li.innerHTML = this.itemToLabel(item);
+		var li = this.$ul.children[index];
+		li.innerHTML = '<a href="#">' + this.itemToLabel(item) + '</a>';
 	};
 
-	List.prototype.destory = function() {
+	List.prototype.destroy = function() {
 		this.$ul.remove();
 	};
 
@@ -98,11 +98,10 @@
 
 	List.prototype._clickHandler = function(event) {
 		event.preventDefault();
-		if (event.target.tagName === 'A') {
-			var index = this.$ul.children().index(event.target.parentElement);
-			this.selectedIndex(index);
-			this.trigger('itemClick', this._selectedItem);
-		}
+    var $li = $(event.target).closest('li');
+    var index = this.$ul.children().index($li);
+    this.selectedIndex(index);
+    this.trigger('itemClick', this._selectedItem);
 	};
 
 	List.DEFAULTS = {

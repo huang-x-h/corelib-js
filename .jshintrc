@@ -1,0 +1,13 @@
+{
+  "browser": true,
+  "curly": true,
+  "eqnull": true,
+  "eqeqeq": true,
+  "undef": true,
+  "unused": true,
+  "indent": 2,
+  "globals": {
+    "jQuery": true,
+    "ztesoft": true
+  }
+}
