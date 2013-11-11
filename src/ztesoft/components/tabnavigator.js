@@ -1,47 +1,46 @@
-(function() {
-	var ns = ztesoft.namespace('ztesoft.components');
+(function($) {
+  var ns = ztesoft.namespace('ztesoft.components');
 
-	var TabNavigator = ns.TabNavigator = function(element, options) {
-		this.element = element;
-		this.tabBar = this.element.querySelector('.nav');
-		this.tabConent = this.element.querySelector('.tab-content');
-		this._selectedIndex = 0;
-		$(this.tabBar).on('click', _.bind(this._tabClickHandler, this));
-	};
+  var TabNavigator = ns.TabNavigator = function(element, options) {
+    this.$element = $(element);
+  };
 
-	_.extend(TabNavigator.prototype, ztesoft.events.Event);
+  $.extend(TabNavigator.prototype, ztesoft.events.Event);
 
-	TabNavigator.prototype.selectedIndex = function(index) {
-		if (arguments.length === 0) {
-			return this._selectedIndex;
-		}
+  TabNavigator.prototype.render = function() {
+    this.$tabBar = this.$element.children('.nav');
+    this.$tabConent = this.$element.children('.tab-content');
+    this._selectedIndex = 0;
+    this.$tabBar.on('click', $.proxy(this._tabClickHandler, this));
+  };
 
-		this._setSelectedIndex(index);
-	}
+  TabNavigator.prototype.selectedIndex = function(index) {
+    if (arguments.length === 0) {
+      return this._selectedIndex;
+    }
 
-	TabNavigator.prototype._setSelectedIndex = function(index) {
-		var oldIndex = this._selectedIndex;
-		if (oldIndex === index) {
-			return;
-		}
+    this._setSelectedIndex(index);
+  }
 
-		var children = this.tabBar.children;
-		if (oldIndex !== -1) {
-			ztesoft.removeClass(children[oldIndex], 'active');
-			ztesoft.removeClass(this.tabConent.querySelector(children[oldIndex].firstChild.getAttribute('href')), 'active');
-		}
+  TabNavigator.prototype._setSelectedIndex = function(index) {
+    var $li;
+    if (this._selectedIndex === index) {
+      return;
+    }
 
-		ztesoft.addClass(children[index], 'active');
-		ztesoft.addClass(this.tabConent.querySelector(children[index].firstChild.getAttribute('href')), 'active');
-		this._selectedIndex = index;
-		this.trigger('change');
-	};
+    this.$tabBar.children().filter('.active').removeClass('active');
+    this.$tabConent.children().filter('.active').removeClass('active');
 
-	TabNavigator.prototype._tabClickHandler = function(event) {
-		var element = event.target;
-		if (element.tagName == 'A') {
-			event.preventDefault();
-			this._setSelectedIndex(_.indexOf(this.tabBar.children, element.parentElement));
-		}
-	}
-})();
+    $li = this.$tabBar.children().eq(index);
+    $li.addClass('active');
+    this.$tabConent.children().filter($li.children('a').attr('href')).addClass('active');
+    this._selectedIndex = index;
+    this.trigger('change', index);
+  };
+
+  TabNavigator.prototype._tabClickHandler = function(event) {
+    event.preventDefault();
+    var $li = $(event.target).closest('li');
+    this._setSelectedIndex(this.$tabBar.children().index($li));
+  };
+})(jQuery);

@@ -12,10 +12,10 @@
 	$.extend(List.prototype, ztesoft.events.Event);
 
 	List.prototype.render = function() {
-		var that = this;
+		var _this = this;
 		var html = ['<ul class="list">'];
         this.dataSource.forEach(function(item) {
-            html.push('<li><a href="#">' + that.itemToLabel(item) + '</a></li>');
+            html.push('<li><a href="#">' + _this.itemToLabel(item) + '</a></li>');
         });
         html.push('</ul>');
 

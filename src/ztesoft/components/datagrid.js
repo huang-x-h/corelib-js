@@ -37,11 +37,11 @@
         + 'px"><table class="table table-hover">' + colgroup;
 		var tbody = '<tbody>';
 		var tr;
-		var that = this;
+		var _this = this;
 		$.each(this.dataSource, function(index, item) {
 			tr = '<tr>';
-			$.each(that.columns, function(index, column) {
-				tr += '<td>' + that.itemToLabel(item, column) + '</td>';
+			$.each(_this.columns, function(index, column) {
+				tr += '<td>' + _this.itemToLabel(item, column) + '</td>';
 			});
 			tr += '</tr>';
 			tbody += tr;

@@ -16,12 +16,12 @@
   };
 
   Tree.prototype.render = function() {
-    var that = this;
+    var _this = this;
     var $ul = $('<ul class="tree"></ul>');
     this._loadFromDataSource();
 
     this.nodes.forEach(function(node) {
-      that._createNode(node);
+      _this._createNode(node);
       $ul.append(node.element);
     });
 
@@ -30,14 +30,14 @@
   };
 
   Tree.prototype._loadFromDataSource = function() {
-    var node, children, nodes = [], that = this;
+    var node, children, nodes = [], _this = this;
     if (this.dataSource) {
       this.dataSource.forEach(function(item) {
         node = new TreeNode(item);
-        children = item[that.childrenField];
+        children = item[_this.childrenField];
         if (children) {
-          node.isOpen = that.autoOpen;
-          that._loadFromArray(children, node);
+          node.isOpen = _this.autoOpen;
+          _this._loadFromArray(children, node);
         }
         nodes.push(node);
       });
@@ -46,14 +46,14 @@
   };
 
   Tree.prototype._loadFromArray = function(array, parentNode) {
-    var node, children, that = this;
+    var node, children, _this = this;
     array.forEach(function(item) {
       node = new TreeNode(item);
       parentNode.addChild(node);
-      children = item[that.childrenField];
+      children = item[_this.childrenField];
       if (children) {
-        node.isOpen = that.autoOpen;
-        that._loadFromArray(children, node);
+        node.isOpen = _this.autoOpen;
+        _this._loadFromArray(children, node);
       }
     });
   };
@@ -89,16 +89,16 @@
   };
 
   Tree.prototype.expandAll = function() {
-    var that = this;
+    var _this = this;
     this.nodes.forEach(function(node) {
-      that.expandNode(node);
+      _this.expandNode(node);
     });
   };
 
   Tree.prototype.collapseAll = function() {
-    var that = this;
+    var _this = this;
     this.nodes.forEach(function(node) {
-      that.collapseNode(node);
+      _this.collapseNode(node);
     });
   };
 
@@ -186,7 +186,7 @@
   };
 
   Tree.prototype._createFolder = function(node) {
-    var that = this;
+    var _this = this;
     var html = [];
     if (node.isOpen) {
       html.push('<li class="open"><a href="#"><span>');
@@ -204,7 +204,7 @@
     var $li = $(html.join(''));
     var $ul = $('<ul class="children-list"></ul>');
     node.children.forEach(function(childNode) {
-      that._createNode(childNode);
+      _this._createNode(childNode);
       $ul.append(childNode.element);
     });
     $li.append($ul);

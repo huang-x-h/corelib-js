@@ -23,17 +23,17 @@
   };
 
   Menu.prototype._createChildrenList = function(children) {
-    var that = this;
+    var _this = this;
     var html = ['<ul class="menu">'];
     children.forEach(function(item) {
-      html.push(that._createItemRenderer(item, null, ''));
+      html.push(_this._createItemRenderer(item, null, ''));
     });
     html.push('</ul>');
     return html.join('');
   };
 
   Menu.prototype._createItemRenderer = function(item) {
-    var that = this;
+    var _this = this;
     var children = item[this.childrenField];
     var html = [];
 
@@ -42,7 +42,7 @@
     if (children) {
       html.push('<i class="glyphicon glyphicon-chevron-right"></i></a><ul class="menu popup">');
       children.forEach(function(childItem) {
-        html.push(that._createItemRenderer(childItem));
+        html.push(_this._createItemRenderer(childItem));
       });
       html.push('</ul>');
     }

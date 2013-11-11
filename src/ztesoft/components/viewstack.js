@@ -1,56 +1,33 @@
 (function($) {
-	var ns = ztesoft.namespace('ztesoft.components');
+  var ns = ztesoft.namespace('ztesoft.components');
 
-	var ViewStack = ns.ViewStack = function(element, options) {
-		this.element = element;
-		
-		var div = this.element.querySelector('.active');
-		if (div) {
-			this._selectedIndex = _.indexOf(this.element.children, div);
-		}
-		else {
-			this._selectedIndex = -1;
-		}
-	};
+  var ViewStack = ns.ViewStack = function(element, options) {
+    this.$element = $(element);
+  };
 
-	$.extend(ViewStack.prototype, ztesoft.events.Event);
+  $.extend(ViewStack.prototype, ztesoft.events.Event);
 
-	ViewStack.prototype.selectedIndex = function(index) {
-		if (arguments.length === 0) {
-			return this._selectedIndex;
-		}
+  ViewStack.prototype.render = function() {
+    var active = this.$element.children('.active');
+    this._selectedIndex = this.$element.children().index(active);
+  };
 
-		this._setSelectedIndex(index);
-	};
+  ViewStack.prototype.selectedIndex = function(index) {
+    if (arguments.length === 0) {
+      return this._selectedIndex;
+    }
 
-	ViewStack.prototype.append = function(element) {
-		this.element.appendChild(li);
-	};
+    this._setSelectedIndex(index);
+  };
 
-	ViewStack.prototype.appendAt = function(element, index) {
-		var refElement = this.element.children[index];
-		this.element.insertBefore(element, refElement);
-	};
+  ViewStack.prototype._setSelectedIndex = function(index) {
+    if (this._selectedIndex === index) {
+      return;
+    }
 
-	ViewStack.prototype._setSelectedId = function(id) {
-		var child = this.element.querySelector('.active');
-		this._setSelectedIndex(this.element.children.indexOf(child));
-	}
-
-	ViewStack.prototype._setSelectedIndex = function(index) {
-		var oldIndex = this._selectedIndex;
-		if (oldIndex === index) {
-			return;
-		}
-
-		var children = this.element.children;
-		if (oldIndex !== -1) {
-			ztesoft.removeClass(children[oldIndex], 'active');
-		}
-
-		ztesoft.addClass(children[index], 'active');
-		this._selectedIndex = index;
-		this.trigger('change');
-	};
+    this.$element.children('.active').removeClass('active');
+    this.$element.children().eq(index).addClass('active');
+    this.trigger('change', index);
+  };
 
 })(jQuery);

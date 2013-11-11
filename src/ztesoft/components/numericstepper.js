@@ -31,7 +31,7 @@
 
 	NumericStepper.prototype._stepValue = function(step) {
 		this.value(this._value + step);
-	}
+	};
 
 	NumericStepper.prototype._setValue = function(value) {
 		this.$textfield.val(this._value = this._checkValue(value));
