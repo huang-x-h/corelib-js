@@ -1,0 +1,75 @@
+// Container that the modal scrolls within
+.modal {
+  display: none;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: @zindex-modal-background;
+
+  &.show {
+    display: block;
+  }
+}
+
+// Shell div to position the modal with bottom padding
+.modal-dialog {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  z-index: (@zindex-modal-background + 10);
+  background-color: @modal-content-bg;
+  border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
+  border: 1px solid @modal-content-border-color;
+  border-radius: @border-radius-large;
+  .box-shadow(0 3px 9px rgba(0,0,0,.5));
+  background-clip: padding-box;
+  // Remove focus outline from opened modal
+  outline: none;
+}
+
+// Modal header
+// Top section of the modal w/ title and dismiss
+.modal-header {
+  padding: @padding-large-vertical @padding-large-horizontal;
+  border-bottom: 1px solid @modal-header-border-color;
+  color: @panel-default-text;
+  background-color: @panel-default-heading-bg;
+  border-color: @modal-header-border-color;
+}
+// Close icon
+.modal-header .close  {
+  margin-top: -2px;
+}
+
+// Title text within header
+.modal-title {
+  margin: 0;
+  line-height: @modal-title-line-height;
+}
+
+// Modal body
+// Where all modal content resides (sibling of .modal-header and .modal-footer)
+.modal-body {
+  position: relative;
+  padding: @padding-large-vertical @padding-large-horizontal;
+}
+
+// Footer (for actions)
+.modal-footer {
+  padding: @padding-large-vertical @padding-large-horizontal;
+  text-align: right; // right align buttons
+  border-top: 1px solid @modal-footer-border-color;
+  border-bottom-color: @modal-footer-border-color;
+  background-color: @panel-footer-bg;
+  .border-bottom-radius(@panel-border-radius - 1);
+
+  // Properly space out buttons
+  .btn + .btn {
+    margin-left: 5px;
+    margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+  }
+}
