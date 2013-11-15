@@ -1,34 +1,28 @@
 // Container that the modal scrolls within
 .modal {
-  display: none;
-  overflow: auto;
+  position: fixed;
+  width: 400px;
+  z-index: @zindex-modal-background;
+  background-color: @modal-content-bg;
+  border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
+  border: 1px solid @modal-content-border-color;
+  border-radius: @border-radius-base;
+  .box-shadow(0 3px 9px rgba(0,0,0,.5));
+  background-clip: padding-box;
+  // Remove focus outline from opened modal
+  outline: none;
+}
+
+// Modal background
+.modal-backdrop {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: @zindex-modal-background;
-
-  &.show {
-    display: block;
-  }
-}
-
-// Shell div to position the modal with bottom padding
-.modal-dialog {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 400px;
-  z-index: (@zindex-modal-background + 10);
-  background-color: @modal-content-bg;
-  border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
-  border: 1px solid @modal-content-border-color;
-  border-radius: @border-radius-large;
-  .box-shadow(0 3px 9px rgba(0,0,0,.5));
-  background-clip: padding-box;
-  // Remove focus outline from opened modal
-  outline: none;
+  z-index: (@zindex-modal-background - 10);
+  background-color: @modal-backdrop-bg;
+  .opacity(0.5);
 }
 
 // Modal header
@@ -38,7 +32,7 @@
   border-bottom: 1px solid @modal-header-border-color;
   color: @panel-default-text;
   background-color: @panel-default-heading-bg;
-  border-color: @modal-header-border-color;
+  .border-top-radius(@border-radius-base - 1);
 }
 // Close icon
 .modal-header .close  {
@@ -55,6 +49,7 @@
 // Where all modal content resides (sibling of .modal-header and .modal-footer)
 .modal-body {
   position: relative;
+  max-height: 300px;
   padding: @padding-large-vertical @padding-large-horizontal;
 }
 
@@ -63,9 +58,8 @@
   padding: @padding-large-vertical @padding-large-horizontal;
   text-align: right; // right align buttons
   border-top: 1px solid @modal-footer-border-color;
-  border-bottom-color: @modal-footer-border-color;
   background-color: @panel-footer-bg;
-  .border-bottom-radius(@panel-border-radius - 1);
+  .border-bottom-radius(@border-radius-base - 1);
 
   // Properly space out buttons
   .btn + .btn {

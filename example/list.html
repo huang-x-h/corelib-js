@@ -26,9 +26,6 @@
 		<script type="text/javascript" src="../src/ztesoft/events/event.js"></script>
 		<script type="text/javascript" src="../src/ztesoft/components/list.js"></script>
 		<script type="text/javascript">
-			var compiled = _.template("hello: <%= name %>");
-			console.log(compiled({name: 'moe'}));
-
 			var list = new ztesoft.components.List(document.getElementById('list'), {
 				dataSource:['Item A', 'Item B', 'Item C']
 			});

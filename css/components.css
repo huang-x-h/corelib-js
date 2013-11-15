@@ -1,4 +1,4 @@
-/*! corelib-js 11-11-2013 */
+/*! corelib-js 15-11-2013 */
 .list {
   height: 100%;
   min-width: 160px;
@@ -313,33 +313,28 @@
 
 .modal {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   z-index: 1040;
-  display: none;
-  overflow: auto;
-}
-
-.modal.show {
-  display: block;
-}
-
-.modal-dialog {
-  position: relative;
-  z-index: 1050;
   width: 400px;
-  margin-right: auto;
-  margin-left: auto;
   background-color: #ffffff;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
+  border-radius: 4px;
   outline: none;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
           box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+  background-color: #000000;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
 }
 
 .modal-header {
@@ -347,7 +342,8 @@
   color: #333333;
   background-color: #f5f5f5;
   border-bottom: 1px solid #e5e5e5;
-  border-color: #e5e5e5;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .modal-header .close {
@@ -361,6 +357,7 @@
 
 .modal-body {
   position: relative;
+  max-height: 300px;
   padding: 10px 16px;
 }
 
@@ -369,7 +366,6 @@
   text-align: right;
   background-color: #f5f5f5;
   border-top: 1px solid #e5e5e5;
-  border-bottom-color: #e5e5e5;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }

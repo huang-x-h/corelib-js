@@ -6,56 +6,49 @@
  * Copyright: Copyright 2013 ZTESOFT, Inc.
  */
 (function($) {
+  var popupInfo = [];
+
+  function createBackdrop() {
+    var $backdrop = $('<div class="modal-backdrop"></div>');
+    $backdrop.appendTo(document.body);
+    return $backdrop;
+  };
+
+  function addPopUp($element, modal) {
+    var popup = {'owner': $element};
+
+    if (modal) {
+      popup.modal = createBackdrop();
+    }
+
+    $element.appendTo(document.body);
+    $element.offset({'top': (document.body.clientHeight - $element.outerHeight()) >> 1,
+      'left': (document.body.clientWidth - $element.outerWidth()) >> 1});
+
+    popupInfo.push(popup);
+  };
+
+  function removePopUp($element) {
+    var n = popupInfo.length,
+        i = 0,
+        popup;
+    for (; i < n; i++) {
+      popup = popupInfo[i];
+
+      if (popup.owner == $element) {
+        popup.owner.remove();
+        if (popup.modal) {
+          popup.modal.remove();
+        }
+        popupInfo.slice(i, 1);
+      }
+    }
+  };
+
   var ns = ztesoft.namespace("ztesoft.components");
 
-  var Modal = ns.Modal = function(options) {
-    $.extend(this, Modal.DEFAULTS, options);
-  };
-
-  $.extend(Modal.prototype, ztesoft.events.Event);
-
-  Modal.DEFAULTS = {
-    'title': 'Modal',
-    'content': '',
-    'modal': false,
-    'template': '<div class="modal">' +
-        '<div class="modal-dialog">' +
-          '<div class="modal-header">' +
-            '<button type="button" class="close js-close">&times;</button>' +
-            '<h4 class="modal-title"><%= title %></h4>' +
-          '</div>' +
-          '<div class="modal-body">' +
-            '<p><%= content %></p>' +
-          '</div>' +
-          '<div class="modal-footer">' +
-            '<button type="button" class="btn btn-default js-close">Close</button>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-  }
-
-  Modal.prototype.render = function() {
-    this.$element = $(_.template(Modal.DEFAULTS.template, {'title': this.title, 'content': this.content}));
-    this.$element.appendTo(document.body);
-
-    this.$element.find('.js-close').on('click', $.proxy(this._closeHandler, this));
-    this._place();
-  };
-
-  Modal.prototype.show = function() {
-    this.$element.addClass('show');
-    this.trigger('show');
-  };
-
-  Modal.prototype.hide = function() {
-    this.$element.removeClass('show');
-    this.trigger('hide');
-  };
-
-  Modal.prototype._place = function() {
-  };
-
-  Modal.prototype._closeHandler = function(event) {
-    this.hide();
+  ns.Modal = {
+    'addPopUp': addPopUp,
+    'removePopUp': removePopUp
   };
 })(jQuery);
